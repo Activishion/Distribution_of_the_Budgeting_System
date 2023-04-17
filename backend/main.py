@@ -4,7 +4,6 @@ from uvicorn import run
 
 from core.config import app_config
 from routers.message import router as message_router
-from routers.root import router as root_router
 from routers.user import router as user_router
 
 
@@ -32,7 +31,6 @@ origins_host = [
 ]
 
 app.include_router(message_router, prefix="/api/v1/message", tags=["Message"])
-app.include_router(root_router, prefix="/api/v1/root", tags=["Root"])
 app.include_router(user_router, prefix="/api/v1/users", tags=["User"])
 
 

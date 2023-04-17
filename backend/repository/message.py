@@ -4,8 +4,8 @@ from typing import List
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models import Message
-from ..schemas import MessageRead
+from models.models import Message
+from schemas.message import MessageRead
 
 
 class MessageRepository:
@@ -25,8 +25,9 @@ class MessageRepository:
         result = await self.__session.execute(query)
         return result.scalars().all()
     
-    async def get_message_by_id(self, message_id: int) -> MessageRead:
+    async def get_message_by_id(self, message_id: int):
         query = select(Message).where(Message.id == message_id)
+        print(query)
         message = await self.__session.execute(query)
         return message.scalar()
     

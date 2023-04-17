@@ -8,11 +8,24 @@ from core.database import Base
 class User(Base):
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, unique=True)
     name = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    external = Column(Boolean, default=False)
+
+    """ Create """
     date = Column(DateTime, default=datetime.utcnow)
-    is_active_subscription = Column(Boolean, default=True)
+    added_via_portal = Column(Boolean, default=True)
+
+    """ Moderation """
+    moderator_is_decision = Column(Boolean, default=False)
+    moderator = Column(String)
+    data_moderation = Column(DateTime)
+    comment = Column(String)
+
+    """ Delete """
+    data_delete = Column(DateTime)
+    comment_delete = Column(String)
 
     def __repr__(self) -> str:
         return self.email

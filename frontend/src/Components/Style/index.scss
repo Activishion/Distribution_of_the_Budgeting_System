@@ -89,7 +89,14 @@ a, p, h1, table, label {
                 text-align: justify;
                 text-indent: 50px;
                 line-height: 25px;
-                margin-bottom: 30px;
+
+                a{
+                    padding-left: 10px;
+                }
+            }
+
+            .main_text_container{
+                margin-top: 10px;
             }
 
             .text{
@@ -152,6 +159,80 @@ a, p, h1, table, label {
 
     .journalId{
         flex-grow: 1;
+        margin: 0 70px;
+
+        .header_container{
+            margin-top: 40px;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+
+            .header_container_left{
+                display: flex;
+                flex-direction: column;
+                align-items: baseline;
+                width: 40%;
+
+                .header_container_create{
+                    display: flex;
+
+                    .create_left{
+                        font-weight: 600;
+                        margin: 0 10px 10px 0;
+                    }
+                }
+
+                .container{
+                    display: flex;
+                    justify-content: end;
+    
+                    .header_left{
+                        font-weight: 600;
+                        margin: 0 10px 10px 0;
+                    }
+                }
+            }
+
+            .header_container_right{
+                width: 60%;
+
+                .container_create{
+                    margin-bottom: 20px;
+
+                    .container_create_head{
+                        font-weight: 700;
+                        padding-bottom: 10px;
+                        text-decoration: underline;
+                    }
+
+                    .header_container_create{
+                        display: flex;
+
+                        .create_left{
+                            font-weight: 600;
+                            margin: 0 10px 10px 0;
+                        }
+                    }
+                }
+            }
+
+            
+        }
+
+        .bottom_container{
+            margin-top: 50px;
+
+            .message_button{
+                background-color: #c3d1e5;
+                padding: 10px 40px;
+                border-radius: 10px;
+                border: none;
+    
+                &:active{
+                    background-color: #a8c0e3;
+                }
+            }
+        }
     }
 
     .message{
@@ -203,6 +284,88 @@ a, p, h1, table, label {
 
     .messageId{
         flex-grow: 1;
+        margin: 0 70px;
+
+        .message_header{
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            margin: 20px 0;
+
+            .date{
+                display: flex;
+
+                p{
+                    font-size: 18px;
+                }
+
+                .date_text{
+                    margin-right: 10px;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .paodzo_flex{
+            display: flex;
+            font-size: 18px;
+
+            .weight{
+                font-weight: 600;
+            }
+
+            p{
+                margin-right: 10px;
+            }
+        }
+
+        p{
+            padding-bottom: 10px;
+        }
+
+        .main{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+
+            .main_h{
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .main_text{
+                font-size: 14px;
+                text-indent: 50px;
+            }
+        }
+
+        .author{
+            display: flex;
+
+            .weight{
+                font-weight: 600;
+            }
+
+            p{
+                margin-right: 10px;
+            }
+        }
+
+        .bottom_container{
+            margin-top: 50px;
+
+            .message_button{
+                background-color: #c3d1e5;
+                padding: 10px 40px;
+                border-radius: 10px;
+                border: none;
+    
+                &:active{
+                    background-color: #a8c0e3;
+                }
+            }
+        }
     }
 
     .subscriptions{
@@ -249,7 +412,6 @@ a, p, h1, table, label {
                     outline: none;
                     color: #000;
                     font-size: 20px;
-                    font-family: inherit;
                     background-color: transparent;
                     border-radius: 10px;
                     margin: 10px 0;

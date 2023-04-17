@@ -1,6 +1,6 @@
-import Header from "./components/Header"
-import Footer from "./components/Footer"
-import AppRouter from "./components/UI/AppRouter"
+import Header from "./Components/UI/Header"
+import Footer from "./Components/UI/Footer"
+import AppRouter from "./Components/UI/Router/AppRouter"
 
 
 const App = () => {

@@ -12,12 +12,6 @@ class UserBaseModel(BaseModel):
     class Config:
         orm_mode = True
 
-    @validator('id')
-    def validate_id(cls, value):
-        if value < 1:
-            raise ValueError('Error id values.')
-        return value
-
     @validator('name', check_fields=False)
     def validate_name(cls, value):
         if not VALID_CHARACTERS.match(value):

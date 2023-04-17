@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import select, insert, update, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models import User
+from models.models import User
 from schemas.user import UserCreate, UserRead
 
 

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom"
 
-import Main from "../Pages/Main"
-import Subscriptions from "../Pages/Subscriptions"
-import Messages from "../Pages/Messages"
-import MessageId from "../Pages/MessageId"
-import Journal from "../Pages/Journal"
-import JournalId from "../Pages/JournalId"
-import Error from "../Pages/Error"
+import Main from "../../Pages/Main"
+import Subscriptions from "../../Pages/Subscriptions"
+import Messages from "../../Pages/Messages"
+import MessageId from "../../Pages/MessageId"
+import Journal from "../../Pages/Journal"
+import JournalId from "../../Pages/JournalId"
+import Error from "../../Pages/Error"
 
 
 const AppRouter = () => {

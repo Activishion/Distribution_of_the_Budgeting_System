@@ -1,3 +1,6 @@
+import FooterContainer from "./Container/FooterContainer"
+
+
 const Footer = () => {
     return (
         <div className="footer">
@@ -9,14 +12,16 @@ const Footer = () => {
                         </p>
                     </div>
                     <div className="footer_item">
-                        <div className="footer_item_container">
-                            <p className="footer_text">Руководитель проекта: </p>
-                            <p className="footer_text">andrey.lisichenko@rt.ru</p>
-                        </div>
-                        <div className="footer_item_container">
-                            <p className="footer_text">Техническая поддержка: </p>
-                            <p className="footer_text">emailpochta@gmail.com</p>
-                        </div>
+                        <FooterContainer
+                            position='Руководитель проекта: '
+                            email='andrey.lisichenko@rt.ru'
+                            href='mailto:andrey.lisichenko@rt.ru'
+                        />
+                        <FooterContainer
+                            position='Техническая поддержка: '
+                            email='aleksey.khaydukov@sibir.rt.ru'
+                            href='mailto:aleksey.khaydukov@sibir.rt.ru'
+                        />
                     </div>
                 </div>
             </div>

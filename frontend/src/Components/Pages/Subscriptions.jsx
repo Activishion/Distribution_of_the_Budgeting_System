@@ -1,6 +1,6 @@
-import InputSubscription from '../UI/InputSubscription'
-import RadioInputSubscription from '../UI/RadioInputSubscription'
-import ButtonForm from '../UI/ButtonForm'
+import InputSubscription from '../UI/Input/InputSubscription'
+import RadioInputSubscription from '../UI/Input/RadioInputSubscription'
+import ButtonForm from '../UI/Buttom/ButtonForm'
 
 
 const Subscriptions = () => {
@@ -51,10 +51,9 @@ const Subscriptions = () => {
                         />
 
                         <datalist id="reports">
-                            <option value="Firefox" />
-                            <option value="Google Chrome" />
-                            <option value="Opera" />
-                            <option value="Safari" />
+                            <option value="Прибыли и убытки РТК" />
+                            <option value="РТК + Tele2" />
+                            <option value="Сегментная отчетность" />
                         </datalist>
 
                         <InputSubscription

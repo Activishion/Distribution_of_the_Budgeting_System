@@ -7,7 +7,7 @@ const Messages = () => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
 
-    async function fetchMessages(limit = 10, page = 1) {
+    async function GetMessages(limit = 10, page = 1) {
         const response = await axios.get('юрл ссылки сообщений', {
             params: {
                 _limit: limit,
@@ -18,10 +18,10 @@ const Messages = () => {
     }
 
     useEffect(() => {
-        fetchMessages()
+        GetMessages()
     }, [])
 
-    return (    //messages через map развернуть в таблицу сообщений
+    return (
         <div className="message">
             <h1 className="message_header">Архив сообщений за последний год</h1>
             <div className="container">
@@ -38,6 +38,24 @@ const Messages = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {messages.map(message => 
+                            <tr>
+                                <td>{message.date}</td>
+                                <td>{message.PAO}</td>
+                                <td>{message.DZO}</td>
+                                <td>{message.subject}</td>
+                                <td>{message.message}</td>
+                                <td>{message.author}</td>
+                                <td className="last_td">
+                                    <button 
+                                        className="buttom_table"
+                                        onClick={() => nav(`/messages/${message.id}`)}
+                                    >
+                                        Подробнее
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
                         <tr>
                             <td>Ячейка</td>
                             <td>Ячейка</td>
