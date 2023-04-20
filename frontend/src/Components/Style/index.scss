@@ -144,6 +144,7 @@ a, p, h1, table, label {
                     border: none;
                     background: #c4d6ee;
                     height: 25px;
+                    cursor: pointer;
 
                     &:active{
                         background-color: #9bb6f1;
@@ -227,6 +228,7 @@ a, p, h1, table, label {
                 padding: 10px 40px;
                 border-radius: 10px;
                 border: none;
+                cursor: pointer;
     
                 &:active{
                     background-color: #a8c0e3;
@@ -273,6 +275,7 @@ a, p, h1, table, label {
                     height: 25px;
                     border: none;
                     background: #c4d6ee;
+                    cursor: pointer;
 
                     &:active{
                         background-color: #9bb6f1;
@@ -360,6 +363,7 @@ a, p, h1, table, label {
                 padding: 10px 40px;
                 border-radius: 10px;
                 border: none;
+                cursor: pointer;
     
                 &:active{
                     background-color: #a8c0e3;
@@ -436,6 +440,10 @@ a, p, h1, table, label {
                     .radio__input{
                         margin-right: 7px;
                     }
+
+                    input{
+                        cursor: pointer;
+                    }
                 }
             }
 
@@ -445,6 +453,7 @@ a, p, h1, table, label {
                 border: none;
                 border-radius: 10px;
                 background-color: #c3d1e5;
+                cursor: pointer;
 
                 &:active{
                     background-color: #a8c0e3;
