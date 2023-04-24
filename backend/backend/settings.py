@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'account',
-    'message'
+    'service'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,7 @@ REST_FRAMEWORK = {
     ],
     'DATETIME_FORMAT': "%d-%m-%Y %H:%M",
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 10
 }
 
 WSGI_APPLICATION = 'backend.wsgi.application'
@@ -67,7 +67,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'default': {
+    #     "ENGINE": '',
+    #     "NAME": '',
+    #     "USER": '',
+    #     "PASSWORD": '',
+    #     "HOST": '',
+    #     "PORT": '',
+    # }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -93,6 +101,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static files
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = []
+
+# Media files
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "account.UserModel"
