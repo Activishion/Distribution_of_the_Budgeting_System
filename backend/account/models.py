@@ -33,14 +33,14 @@ class UserModel(AbstractBaseUser):
         max_length=255,
         unique=True
     )
-    name = CharField('Имя', max_length=100)
-    external = BooleanField(default=False)
-    is_active = BooleanField(default=False)
-    is_admin = BooleanField(default=False)
-    is_superuser = BooleanField(default=False)
-    user_permissions = ManyToManyField(Permission, blank=True)
-    groups = ManyToManyField(Group, blank=True)
-    last_login = DateTimeField(auto_now=True)
+    full_name = CharField('ФИО', max_length=200)
+    external = BooleanField('Внешний пользователь', default=False)
+    is_active = BooleanField('Active', default=False)
+    is_admin = BooleanField('Admin', default=False)
+    is_superuser = BooleanField('Superuser', default=False)
+    user_permissions = ManyToManyField(Permission, verbose_name='Разрешения', blank=True)
+    groups = ManyToManyField(Group, verbose_name='Группы', blank=True)
+    last_login = DateTimeField('Последняя активность', auto_now=True)
 
     """ Create """
     date_create = DateTimeField('Дата добавления', auto_now_add=True)
@@ -66,7 +66,7 @@ class UserModel(AbstractBaseUser):
         verbose_name_plural: str = 'пользователи'
 
     def __str__(self) -> str:
-        return self.name
+        return self.email
 
     def has_perm(self, perm, obj=None) -> bool:
         """ Есть ли у пользователя конкретное разрешение? """
@@ -82,8 +82,8 @@ class UserModel(AbstractBaseUser):
         return self.is_admin
 
     def save(self, *args, **kwargs):
-        name = self.name.lower()
-        if name is ['root', 'администратор', 'admin']:
+        full_name = self.full_name.lower()
+        if full_name is ['root', 'администратор', 'admin']:
             return status.HTTP_401_UNAUTHORIZED
         else:
             super().save(*args, **kwargs)

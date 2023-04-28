@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.generics import (ListCreateAPIView, ListAPIView,
     RetrieveUpdateAPIView)
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from service.models import Message, News, Reporting
 from service.serializers import (MessageSerializer, NewsSerializer, 
@@ -13,7 +14,7 @@ from utils.paginator import APIListPaginator
 
 
 class AllMessageUsers(ListCreateAPIView):
-    queryset = Message.objects.filter().reverse()  # за последний год
+    queryset = Message.objects.filter()  # за последний год
     serializer_class = MessageSerializer
     pagination_class = APIListPaginator
 
@@ -72,31 +73,25 @@ class NewsCreateView(ListCreateAPIView):
         )
 
 
-class NewsUpdateView(RetrieveUpdateAPIView):
-    def get_queryset(self, pk: int):
-        return News.objects.get(pk=pk)
-
-    def get_serializer_class(self, **kwargs):
-        return NewsSerializer
-
-    def list(self, request, pk: int) -> News:
-        queryset = self.get_queryset(pk)
-        serializer = self.get_serializer_class(queryset, many=False)
+class NewsUpdateView(APIView):
+    def get(self, request, pk):
+        queryset = News.objects.get(pk=pk)
+        serializer = NewsSerializer(queryset, many=False)
         return Response(
-            {'new': serializer.data},
+            {'news': serializer.data},
             status=status.HTTP_200_OK
         )
 
-    def update(self, request, pk: int) -> News:
+    def put(self, request, pk):
         try:
-            instance = self.get_queryset(pk)
+            instance = News.objects.get(pk=pk)
         except:
             return Response(
                 {'error': 'Объект не найден.'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = self.get_serializer_class(data=request.data, instance=instance)
+        serializer = NewsSerializer(data=request.data, instance=instance)
         if not serializer.is_valid(raise_exception=True):
             return Response(
                 {'error': 'Данные не валидны.'}, 
@@ -105,7 +100,7 @@ class NewsUpdateView(RetrieveUpdateAPIView):
 
         serializer.save()
         return Response(
-            {'new': serializer.data},
+            {'report': serializer.data},
             status=status.HTTP_200_OK
         )
 
@@ -137,31 +132,25 @@ class ReportCreateView(ListCreateAPIView):
         )
 
 
-class ReportUpdateView(RetrieveUpdateAPIView):
-    def get_queryset(self, pk: int):
-        return Reporting.objects.get(pk=pk)
-
-    def get_serializer_class(self, **kwargs):
-        return ReportSerializer
-
-    def list(self, request, pk: int) -> Reporting:
-        queryset = self.get_queryset(pk)
-        serializer = self.get_serializer_class(queryset, many=False)
+class ReportUpdateView(APIView):
+    def get(self, request, pk):
+        queryset = Reporting.objects.get(pk=pk)
+        serializer = ReportSerializer(queryset, many=False)
         return Response(
             {'report': serializer.data},
             status=status.HTTP_200_OK
         )
 
-    def update(self, request, pk: int) -> Reporting:
+    def put(self, request, pk):
         try:
-            instance = self.get_queryset(pk)
+            instance = Reporting.objects.get(pk=pk)
         except:
             return Response(
                 {'error': 'Объект не найден.'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = self.get_serializer_class(data=request.data, instance=instance)
+        serializer = ReportSerializer(data=request.data, instance=instance)
         if not serializer.is_valid(raise_exception=True):
             return Response(
                 {'error': 'Данные не валидны.'}, 

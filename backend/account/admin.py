@@ -7,15 +7,21 @@ from account.models import UserModel
 @admin.register(UserModel)
 class CustomUserAdmin(BaseUserAdmin):
     fieldsets = (
-        ('Персональная информация', {"fields": ("name", "email", "is_active",
-                    "is_admin", "is_superuser")}),
+        ('Персональная информация', {"fields": ("full_name", "email", 'external',
+            "is_active", "is_admin", "is_superuser")}),
+        ('Последняя активность', {"fields": ("last_login", )}),
         ('Группы', {"fields": ("groups", )}),
-        ('Права доступа', {"fields": ("user_permissions", )})
+        ('Права доступа', {"fields": ("user_permissions", )}),
+        ('Регистрация', {"fields": ('date_create', 'added_via_portal')}),
+        ('Модерация', {"fields": ('moderator_is_decision', 'moderator', 
+            'data_moderation', 'comment')}),
+        ('Удаление', {"fields": ('date_delete', 'comment_delete')}),
     )
-    list_display = ("email", "name", 'is_active', "is_admin")
+    readonly_fields = ('last_login', 'date_create')
+    list_display = ("email", "full_name", 'is_active', "is_admin")
     list_filter = ("is_admin", "is_superuser", "is_active", "groups")
-    search_fields = ("name", "email")
-    ordering = ("name", )
+    search_fields = ("full_name", "email")
+    ordering = ("full_name", )
     filter_horizontal = ("groups", "user_permissions")
 
     def get_form(self, request, obj=None, **kwargs):
@@ -25,7 +31,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
         if not is_superuser:
             disabled_fields |= {
-                'username',
+                'full_name',
                 'is_superuser',
                 'user_permissions',
             }

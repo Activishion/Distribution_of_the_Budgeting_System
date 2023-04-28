@@ -5,8 +5,8 @@ from service.views import (AllMessageUsers, MessageUsersById, NewsCreateView,
 
 
 urlpatterns = [
-    path('', AllMessageUsers.as_view()),
-    path('<int:pk>/', MessageUsersById.as_view()),
+    path('messages/', AllMessageUsers.as_view()),
+    path('messages/<int:pk>/', MessageUsersById.as_view()),
     path('news/', NewsCreateView.as_view()),
     path('news/<int:pk>/', NewsUpdateView.as_view()),
     path('report/', ReportCreateView.as_view()),

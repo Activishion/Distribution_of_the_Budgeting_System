@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import axios from 'axios'
 
+import MessageService from '../API/MessageAPI'
 import MessageText from '../UI/Container/MessageText'
 
 
 const MessagePage = () => {
     const nav = useNavigate()
     const { id } = useParams()
-    const [messageId, setMessageId] = useState(null)
+    const [messageId, setMessageId] = useState([])
 
     async function GetMessageById(id) {
-        const response = await axios.get('юрл ссылки сообщений' + id)
-        setMessageId(response.data)
+        const messageById = await MessageService.getMessageById(id)
+        setMessageId(messageById)
     }
 
     useEffect(() => {
@@ -22,11 +22,11 @@ const MessagePage = () => {
     return (
         <div className="messageId">
             <div className="message_header">
-                <p className="message_header_text">Сообщение - {id}</p>
+                <p className="message_header_text">Сообщение #{messageId.id}</p>
                 <div className="paodzo_flex">
                     <MessageText
                         header='Отправлено: '
-                        text='17:37:23 14.04.2023'
+                        text={messageId.date}
                     />
                 </div>
             </div>
@@ -34,26 +34,28 @@ const MessagePage = () => {
                 <div className="paodzo_flex">
                     <MessageText
                         header='ПАО: '
-                        text='Да'
+                        text={messageId.PAO ? 'Да' : 'Нет'}
                     />
                 </div>
                 <div className="paodzo_flex">
                     <MessageText
                         header='ДЗО: '
-                        text='Да'
+                        text={messageId.DZO ? 'Да' : 'Нет'}
                     />
                 </div>
             </div>
+            
             <div className="main">
-                <p className="main_h">Тема сообщения</p>
+                <p className="main_h">{messageId.subject}</p>
                 <p className="main_text">
-                    Текст сообщения
+                    {messageId.message}
                 </p>
             </div>
+            
             <div className="author">
                 <MessageText
                     header='Автор: '
-                    text='Маравье Степан Валерьевич'
+                    text={messageId?.author?.full_name}
                 />
             </div>
             <div className="bottom_container">

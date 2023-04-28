@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from 'axios'
+
+import JournalService from '../API/JournalAPI'
 
 
 const Journal = () => {
@@ -9,13 +10,8 @@ const Journal = () => {
     const [journal, setJournal] = useState([])
 
     async function GetJournals(limit = 10, page = 1) {
-        const response = await axios.get('юрл ссылки журнала', {
-            params: {
-                _limit: limit,
-                _page: page
-            }
-        })
-        setJournal(response.data)
+        const allJournal = await JournalService.getAllJournals(limit, page)
+        setJournal(allJournal)
     }
 
     useEffect(() => {
@@ -40,21 +36,33 @@ const Journal = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td className="last_td">
-                                <button 
-                                    className="buttom_table"
-                                    onClick={() => nav(`/journal/1`)}
-                                >
-                                    Подробнее
-                                </button>
-                            </td>
-                        </tr>
+                        {journal.map(record => (
+                            <tr key={record.id}>
+                                <td>{record.user.date_create}</td>
+                                <td>
+                                    {record.subscription
+                                    ? 'Включение'
+                                    : 'Исключение'
+                                    }
+                                </td>
+                                <td>
+                                    {record?.user?.moderator_is_decision
+                                    ? 'Согласовано'
+                                    : 'Ожидает'
+                                    }
+                                </td>
+                                <td>{record.user.email}</td>
+                                <td>{record.user.full_name}</td>
+                                <td className="last_td">
+                                    <button 
+                                        className="buttom_table"
+                                        onClick={() => nav(`/journal/${record.id}`)}
+                                    >
+                                        Подробнее
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

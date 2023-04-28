@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from 'axios'
+
+import MessageService from '../API/MessageAPI'
 
 
 const Messages = () => {
@@ -8,13 +9,8 @@ const Messages = () => {
     const [messages, setMessages] = useState([])
 
     async function GetMessages(limit = 10, page = 1) {
-        const response = await axios.get('юрл ссылки сообщений', {
-            params: {
-                _limit: limit,
-                _page: page
-            }
-        })
-        setMessages(response.data)
+        const allMessages = await MessageService.getAllMessages(limit, page)
+        setMessages(allMessages)
     }
 
     useEffect(() => {
@@ -39,15 +35,15 @@ const Messages = () => {
                     </thead>
                     <tbody>
                         {messages.map(message => 
-                            <tr>
+                            <tr key={message.id}>
                                 <td>{message.date}</td>
-                                <td>{message.PAO}</td>
-                                <td>{message.DZO}</td>
+                                <td>{message.PAO ? 'Да' : 'Нет'}</td>
+                                <td>{message.DZO ? 'Да' : 'Нет'}</td>
                                 <td>{message.subject}</td>
                                 <td>{message.message}</td>
-                                <td>{message.author}</td>
+                                <td>{message.author.full_name}</td>
                                 <td className="last_td">
-                                    <button 
+                                    <button
                                         className="buttom_table"
                                         onClick={() => nav(`/messages/${message.id}`)}
                                     >
@@ -56,22 +52,6 @@ const Messages = () => {
                                 </td>
                             </tr>
                         )}
-                        <tr>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td>Ячейка</td>
-                            <td className="last_td">
-                                <button 
-                                    className="buttom_table"
-                                    onClick={() => nav(`/messages/1`)}  // Заменить на динамическую ссылку
-                                >
-                                    Подробнее
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>

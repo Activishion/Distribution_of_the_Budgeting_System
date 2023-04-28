@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import axios from 'axios'
 
+import JournalService from '../API/JournalAPI'
 import RecordDiv from '../UI/Container/RecordDiv'
 import RecordHeader from '../UI/Container/RecordHeader'
 
@@ -9,32 +9,32 @@ import RecordHeader from '../UI/Container/RecordHeader'
 const JournalPage = () => {
     const nav = useNavigate()
     const { id } = useParams()
-    const [journalId, setJournalId] = useState(null)
+    const [journalId, setJournalId] = useState([])
 
     async function GetJournalById(id) {
-        const response = await axios.get('юрл ссылки журнала' + id)
-        setJournalId(response.data)
+        const journalById = await JournalService.getJournalById(id)
+        setJournalId(journalById)
     }
 
     useEffect(() => {
         GetJournalById(id)
     }, [])
 
-    return( 
+    return(
         <div className="journalId">
             <div className="header_container">
                 <div className="header_container_left">
                     <RecordDiv 
                         header='Email: '
-                        text='тут будет почта'
+                        text={journalId?.user?.email}
                     />
                     <RecordDiv 
                         header='Имя ползователя: '
-                        text='Анатолий белкин'
+                        text={journalId?.user?.full_name}
                     />
                     <RecordDiv 
                         header='Внешний пользователь: '
-                        text='Нет'
+                        text={journalId?.user?.external ? 'Да' : 'Нет'}
                     />
                 </div>
                 <div className="header_container_right">
@@ -42,43 +42,65 @@ const JournalPage = () => {
                         <RecordHeader text='Создание' />
                         <RecordDiv 
                             header='Дата создания:'
-                            text='тут будет дата создания'
+                            text={journalId?.user?.date_create}
                         />
                         <RecordDiv 
                             header='Добавлено через портал:'
-                            text='Да'
+                            text={journalId?.user?.added_via_portal ? 'Да' : 'Нет'}
                         />
                     </div>
                     <div className="container_create">
                         <RecordHeader text='Согласование' />
                         <RecordDiv 
                             header='Решение модератора: '
-                            text='Согласовано'
+                            text={
+                                journalId?.user?.moderator_is_decision
+                                ? 'Согласовано'
+                                : 'Не согласовано'}
                         />
-                        <RecordDiv 
-                            header='Модератор: '
-                            text='Лисиченко Андрей Валерьевич'
-                        />
-                        <RecordDiv 
-                            header='Дата согласования: '
-                            text='11:11 13.12.13'
-                        />
-                        <RecordDiv 
-                            header='Комменарий: '
-                            text='Тут пишем своим комменты'
-                        />
+                        {journalId?.user?.moderator
+                            ?<RecordDiv 
+                                header='Модератор: '
+                                text={journalId?.user?.moderator}
+                            />
+                            :<></>
+                        }
+                        {journalId?.user?.data_moderation
+                            ?<RecordDiv 
+                                header='Дата согласования: '
+                                text={journalId?.user?.data_moderation}
+                            />
+                            :<></>
+                        }
+                        {journalId?.user?.comment
+                            ?<RecordDiv 
+                                header='Комменарий: '
+                                text={journalId?.user?.comment}
+                            />
+                            :<></>
+                        }
                     </div>
-                    <div className="container_create">
-                        <RecordHeader text='Удаление' />
-                        <RecordDiv 
-                            header='Дата удаления: '
-                            text='11:11 13.12.13'
-                        />
-                        <RecordDiv 
-                            header='Комменарий: '
-                            text='Тут пишем своим комменты'
-                        />
-                    </div>
+                    
+                        <div className="container_create">
+                            {journalId?.user?.date_delete
+                                ?<div>
+                                    <RecordHeader text='Удаление' />
+                                    <RecordDiv 
+                                        header='Дата удаления: '
+                                        text={journalId?.user?.date_delete}
+                                    />
+                                </div>
+                                :<></>
+                            }
+                            {journalId?.user?.comment_delete
+                                ?<RecordDiv 
+                                    header='Комменарий: '
+                                    text={journalId?.user?.comment_delete}
+                                />
+                                :<></>
+                            }
+                        </div>
+                        
                 </div>
             </div>
             <div className="bottom_container">

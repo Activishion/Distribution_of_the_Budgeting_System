@@ -1,11 +1,16 @@
-from typing import List
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from rest_framework.generics import ListAPIView
-
+from account.models import UserModel
 from account.serializers import UserSerializer
-from utils.paginator import APIListPaginator
 
 
-class UsersListView(ListAPIView):
-    serializer_class = UserSerializer
-    pagination_class = APIListPaginator
+class UserView(APIView):
+    def get(self, request, pk):
+        queryset = UserModel.objects.get(pk=pk)
+        serializer = UserSerializer(queryset, many=False)
+        return Response(
+            {'user': serializer.data},
+            status=status.HTTP_200_OK
+        )

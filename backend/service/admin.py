@@ -5,14 +5,20 @@ from .models import Message, Reporting, News
 
 @register(Message)
 class MessageAdmin(ModelAdmin):
-    fields = []
+    list_display = ('subject', 'message', "date", "author", 'PAO', 'DZO')
+    list_filter = ('date', "PAO", "DZO")
+    ordering = ("date", )
 
 
 @register(News)
 class NewsAdmin(ModelAdmin):
-    pass
+    list_display = ("user", 'subscription')
+    list_filter = ("subscription", )
+    ordering = ("email", )
 
 
 @register(Reporting)
 class ReportingAdmin(ModelAdmin):
-    pass
+    list_display = ("user", "report", 'subscription')
+    list_filter = ("report", "subscription")
+    ordering = ("user", )

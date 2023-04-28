@@ -7,12 +7,12 @@ from account.models import UserModel
 
 
 class Message(Model):
-    date = DateTimeField(auto_now_add=True)
-    PAO = BooleanField(default=True)
-    DZO = BooleanField(default=True)
-    subject = CharField(max_length=255)
-    message = TextField()
-    author = ForeignKey(UserModel, on_delete=CASCADE)
+    date = DateTimeField('Дата', auto_now_add=True)
+    PAO = BooleanField('ПАО', default=True)
+    DZO = BooleanField('ДЗО', default=True)
+    subject = CharField('Тема', max_length=255)
+    message = TextField('Текст сообщения')
+    author = ForeignKey(UserModel, verbose_name='Отправитель', on_delete=CASCADE)
 
     class Meta:
         verbose_name: str = 'сообщение'
@@ -33,6 +33,10 @@ class News(Model):
     email = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
     subscription = BooleanField('Подписка', default=False)
 
+    class Meta:
+        verbose_name: str = 'новость'
+        verbose_name_plural: str = 'новости'
+
     def __str__(self) -> str:
         return f"{self.email} - {self.subscription}"
 
@@ -44,9 +48,13 @@ REPORT = (
 )
 
 class Reporting(Model):
-    report = CharField(max_length=100, choices=REPORT)
-    email = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
+    report = CharField('Отчет', max_length=100, choices=REPORT)
+    user = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
     subscription = BooleanField('Подписка', default=False)
 
+    class Meta:
+        verbose_name: str = 'подписку'
+        verbose_name_plural: str = 'подписки'
+
     def __str__(self) -> str:
-        return f"{self.email} - {self.report} - {self.subscription}"
+        return f"{self.user} - {self.report} - {self.subscription}"

@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-lv+(gqvp8*upkt9ld8t2gwl+)2d4g2h6_868l=w5+$+3oelyw0
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
+    'corsheaders',
     'account',
     'service'
 ]
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -33,7 +35,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGINS_WHITELIST = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+
 ROOT_URLCONF = 'backend.urls'
+WSGI_APPLICATION = 'backend.wsgi.application'
+AUTH_USER_MODEL = "account.UserModel"
+LANGUAGE_CODE = 'ru'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TEMPLATES = [
     {
@@ -60,8 +71,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
-
-WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -93,12 +102,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru'
-
-TIME_ZONE = 'UTC'
-
+# Time zone
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files
@@ -109,7 +115,3 @@ STATICFILES_DIRS = []
 # Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = "account.UserModel"
