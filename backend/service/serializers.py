@@ -14,6 +14,13 @@ class UserMessageSerializer(ModelSerializer):
         fields: List[str] = ['full_name', ]
 
 
+class UserReportSerializer(ModelSerializer):
+    class Meta:
+        model: UserModel = UserModel
+        depth: int = 1
+        fields: List[str] = ['email', ]
+
+
 class MessageSerializer(ModelSerializer):
     author = UserMessageSerializer(many=False, read_only=True)
 
@@ -30,7 +37,7 @@ class NewsSerializer(ModelSerializer):
 
 
 class ReportSerializer(ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
+    user = UserReportSerializer(many=False, read_only=True)
 
     class Meta:
         model: Reporting = Reporting

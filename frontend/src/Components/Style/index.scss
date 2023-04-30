@@ -458,34 +458,20 @@
                 }
             }
 
-            .container{
-                width: 370px;
+            .container_button {
+                margin-top: 10px;
 
-                .radio_container{
-                    display: flex;
-                    justify-content: space-evenly;
-                    margin: 10px 0;
-
-                    .radio__input{
-                        margin-right: 7px;
+                button{
+                    width: 120px;
+                    height: 40px;
+                    border: none;
+                    border-radius: 10px;
+                    background-color: #c3d1e5;
+                    cursor: pointer;
+    
+                    &:active{
+                        background-color: #a8c0e3;
                     }
-
-                    input{
-                        cursor: pointer;
-                    }
-                }
-            }
-
-            button{
-                width: 120px;
-                height: 40px;
-                border: none;
-                border-radius: 10px;
-                background-color: #c3d1e5;
-                cursor: pointer;
-
-                &:active{
-                    background-color: #a8c0e3;
                 }
             }
         }
