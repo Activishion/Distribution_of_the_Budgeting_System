@@ -30,7 +30,6 @@ class News(Model):
         verbose_name='Пользователь',
         on_delete=CASCADE
     )
-    email = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
     subscription = BooleanField('Подписка', default=False)
 
     class Meta:
@@ -38,7 +37,7 @@ class News(Model):
         verbose_name_plural: str = 'новости'
 
     def __str__(self) -> str:
-        return f"{self.email} - {self.subscription}"
+        return f"{self.subscription}"
 
 
 REPORT = (
@@ -51,6 +50,7 @@ class Reporting(Model):
     report = CharField('Отчет', max_length=100, choices=REPORT)
     user = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
     subscription = BooleanField('Подписка', default=False)
+    data = DateTimeField('Дата заявки', auto_now_add=True)
 
     class Meta:
         verbose_name: str = 'подписку'

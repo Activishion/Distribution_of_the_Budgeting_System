@@ -9,8 +9,8 @@ const NewNews = () => {
     const handleNewsSubmit = (e) => {
         e.preventDefault();
         axios.post('http://127.0.0.1:8000/api/v1/service/news/', {
-            email,
-            subscriptionNews
+            email: email,
+            subscription: subscriptionNews
         })
         .then((response) => {
             console.log(response.data)

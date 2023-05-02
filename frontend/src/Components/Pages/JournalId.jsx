@@ -42,7 +42,7 @@ const JournalPage = () => {
                         <RecordHeader text='Создание' />
                         <RecordDiv 
                             header='Дата создания:'
-                            text={journalId?.user?.date_create}
+                            text={journalId.data}
                         />
                         <RecordDiv 
                             header='Добавлено через портал:'

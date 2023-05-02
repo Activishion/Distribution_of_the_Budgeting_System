@@ -38,7 +38,7 @@ const Journal = () => {
                     <tbody>
                         {journal.map(record => (
                             <tr key={record.id}>
-                                <td>{record.user.date_create}</td>
+                                <td>{record.data}</td>
                                 <td>
                                     {record.subscription
                                     ? 'Включение'
@@ -51,8 +51,8 @@ const Journal = () => {
                                     : 'Ожидает'
                                     }
                                 </td>
-                                <td>{record.user.email}</td>
-                                <td>{record.user.full_name}</td>
+                                <td>{record.email}</td>
+                                <td>{record.full_name}</td>
                                 <td className="last_td">
                                     <button 
                                         className="buttom_table"

@@ -14,11 +14,10 @@ class MessageAdmin(ModelAdmin):
 class NewsAdmin(ModelAdmin):
     list_display = ("user", 'subscription')
     list_filter = ("subscription", )
-    ordering = ("email", )
 
 
 @register(Reporting)
 class ReportingAdmin(ModelAdmin):
-    list_display = ("user", "report", 'subscription')
+    list_display = ("user", "report", 'data', 'subscription')
     list_filter = ("report", "subscription")
     ordering = ("user", )

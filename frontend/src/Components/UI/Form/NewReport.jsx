@@ -10,9 +10,9 @@ const NewReport = () => {
     const handleReportSubmit = (e) => {
         e.preventDefault();
         axios.post('http://127.0.0.1:8000/api/v1/service/report/', {
-            report,
-            email,
-            subscription
+            report: report,
+            email: email,
+            subscription: subscription
         })
         .then((response) => {
             console.log(response.data)

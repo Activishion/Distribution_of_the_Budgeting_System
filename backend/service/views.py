@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from service.models import Message, News, Reporting
 from service.serializers import (MessageSerializer, NewsSerializer, 
-    ReportSerializer)
+    ReportSerializer, PostReportSerializer, PostNewsSerializer)
 from utils.paginator import APIListPaginator
 
 
@@ -59,13 +59,8 @@ class NewsCreateView(ListCreateAPIView):
         )
 
     def create(self, request) -> News:
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(
-                {'error': 'Данные не валидны.'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
+        serializer = PostNewsSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
             {'newNews': serializer.data},
@@ -118,13 +113,8 @@ class ReportCreateView(ListCreateAPIView):
         )
 
     def create(self, request) -> Reporting:
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(
-                {'error': 'Данные не валидны.'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
+        serializer = PostReportSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
             {'newReport': serializer.data},
