@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
-    'account',
-    'service'
+    'account.apps.AccountConfig',
+    'service.apps.ServiceConfig'
 ]
 
 MIDDLEWARE = [
@@ -62,14 +62,18 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'service.pagination.APIPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
     'DATETIME_FORMAT': "%d-%m-%Y %H:%M",
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
 }
 
 DATABASES = {

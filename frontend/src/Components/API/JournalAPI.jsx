@@ -4,13 +4,13 @@ import axios from 'axios'
 export default class JournalService {
     static async getAllJournals(limit = 10, page = 1) {
         const response = await axios
-            .get(`http://127.0.0.1:8000/api/v1/service/report?limit=${limit}`, {
+            .get(`http://127.0.0.1:8000/api/v1/service/report`, {
                 params: {
-                    _limit: limit,
-                    _page: page
+                    limit: limit,
+                    page: page
                 }
             })
-        return response.data.reports
+        return response.data
     }
 
     static async getJournalById(id) {
@@ -20,6 +20,6 @@ export default class JournalService {
                     'Content-Type': 'application/json'
                 }
             })
-        return response.data.report
+        return response.data
     }
 }

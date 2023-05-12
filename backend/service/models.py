@@ -1,9 +1,7 @@
 from typing import List
 
-from django.db.models import (Model, ForeignKey, CharField, BooleanField, 
-    DateTimeField, TextField, CASCADE)
-
-from account.models import UserModel
+from django.db.models import (Model, CharField, BooleanField, TextField,
+    DateTimeField)
 
 
 class Message(Model):
@@ -12,7 +10,8 @@ class Message(Model):
     DZO = BooleanField('ДЗО', default=True)
     subject = CharField('Тема', max_length=255)
     message = TextField('Текст сообщения')
-    author = ForeignKey(UserModel, verbose_name='Отправитель', on_delete=CASCADE)
+    author = CharField('Отправитель', max_length=100)
+    full_name = CharField('ФИО', max_length=200)
 
     class Meta:
         verbose_name: str = 'сообщение'
@@ -24,20 +23,18 @@ class Message(Model):
 
 
 class News(Model):
-    user = ForeignKey(
-        UserModel,
-        related_name='newsUser',
-        verbose_name='Пользователь',
-        on_delete=CASCADE
-    )
+    user = CharField('Пользователь', max_length=100)
+    full_name = CharField('ФИО', max_length=200)
     subscription = BooleanField('Подписка', default=False)
 
     class Meta:
-        verbose_name: str = 'новость'
-        verbose_name_plural: str = 'новости'
+        verbose_name: str = 'подписку'
+        verbose_name_plural: str = 'подписки на новости'
 
-    def __str__(self) -> str:
-        return f"{self.subscription}"
+    def __str__(self):
+        if self.subscription == False:
+            return f"Отписка - {self.user}"
+        return f"Подписка - {self.user}"
 
 
 REPORT = (
@@ -48,13 +45,29 @@ REPORT = (
 
 class Reporting(Model):
     report = CharField('Отчет', max_length=100, choices=REPORT)
-    user = ForeignKey(UserModel, verbose_name='Email пользователя', on_delete=CASCADE)
+    user = CharField('Email пользователя', max_length=100)
+    full_name = CharField('ФИО', max_length=200)
     subscription = BooleanField('Подписка', default=False)
     data = DateTimeField('Дата заявки', auto_now_add=True)
 
+    """ Create """
+    date_create = DateTimeField('Дата добавления', auto_now_add=True)
+    added_via_portal = BooleanField('Добавлено через портал', default=True)
+
+    """ Moderation """
+    moderator_is_decision = BooleanField('Проверка модератора', default=False)
+    moderator = CharField('Модератор', max_length=100, blank=True, null=True)
+    data_moderation = DateTimeField('Дата модерации', blank=True, null=True)
+    comment = TextField('Комментарий модератора', blank=True, null=True)
+
+    """ Delete """
+    date_delete = DateTimeField('Дата удаления', blank=True, null=True)
+    comment_delete = TextField('Комментарий при удалении', blank=True, null=True)
+
     class Meta:
-        verbose_name: str = 'подписку'
-        verbose_name_plural: str = 'подписки'
+        verbose_name: str = 'отчетность'
+        verbose_name_plural: str = 'отчетности'
+        ordering: List[str] = ['-data', ]
 
     def __str__(self) -> str:
         return f"{self.user} - {self.report} - {self.subscription}"

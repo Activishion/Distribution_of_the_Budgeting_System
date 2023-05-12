@@ -12,7 +12,7 @@ const MessagePage = () => {
 
     async function GetMessageById(id) {
         const messageById = await MessageService.getMessageById(id)
-        setMessageId(messageById)
+        setMessageId(messageById.message)
     }
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const MessagePage = () => {
             <div className="author">
                 <MessageText
                     header='Автор: '
-                    text={messageId?.author?.full_name}
+                    text={messageId?.full_name}
                 />
             </div>
             <div className="bottom_container">

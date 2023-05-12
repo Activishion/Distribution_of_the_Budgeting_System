@@ -1,6 +1,6 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permission, Group
 from django.db.models import (CharField, BooleanField, DateTimeField,
-    TextField, EmailField, ManyToManyField)
+    EmailField, ManyToManyField)
 from rest_framework import status
 
 
@@ -23,6 +23,8 @@ class CustomUserManager(BaseUserManager):
             password=password
         )
         user.is_admin = True
+        user.is_active = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -41,20 +43,7 @@ class UserModel(AbstractBaseUser):
     user_permissions = ManyToManyField(Permission, verbose_name='Разрешения', blank=True)
     groups = ManyToManyField(Group, verbose_name='Группы', blank=True)
     last_login = DateTimeField('Последняя активность', auto_now=True)
-
-    """ Create """
     date_create = DateTimeField('Дата добавления', auto_now_add=True)
-    added_via_portal = BooleanField('Добавлено через портал', default=True)
-
-    """ Moderation """
-    moderator_is_decision = BooleanField('Проверка модератора', default=False)
-    moderator = CharField('Модератор', max_length=100, blank=True, null=True)
-    data_moderation = DateTimeField('Дата модерации', blank=True, null=True)
-    comment = TextField('Комментарий модератора', blank=True, null=True)
-
-    """ Delete """
-    date_delete = DateTimeField('Дата удаления', blank=True, null=True)
-    comment_delete = TextField('Комментарий при удалении', blank=True, null=True)
 
     objects = CustomUserManager()
 

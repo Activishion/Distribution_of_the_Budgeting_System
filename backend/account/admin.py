@@ -12,10 +12,7 @@ class CustomUserAdmin(BaseUserAdmin):
         ('Последняя активность', {"fields": ("last_login", )}),
         ('Группы', {"fields": ("groups", )}),
         ('Права доступа', {"fields": ("user_permissions", )}),
-        ('Регистрация', {"fields": ('date_create', 'added_via_portal')}),
-        ('Модерация', {"fields": ('moderator_is_decision', 'moderator', 
-            'data_moderation', 'comment')}),
-        ('Удаление', {"fields": ('date_delete', 'comment_delete')}),
+        ('Регистрация', {"fields": ('date_create', )}),
     )
     readonly_fields = ('last_login', 'date_create')
     list_display = ("email", "full_name", 'is_active', "is_admin")

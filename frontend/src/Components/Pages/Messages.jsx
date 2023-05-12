@@ -2,20 +2,34 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 import MessageService from '../API/MessageAPI'
+import PaginationService from '../UI/Pagination/Pages'
 
 
 const Messages = () => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
+    // console.log(messages)
+    let pagesArray = PaginationService.getPagesArray(totalPages)
 
-    async function GetMessages(limit = 10, page = 1) {
+    async function GetMessages() {
         const allMessages = await MessageService.getAllMessages(limit, page)
-        setMessages(allMessages)
+        const totalCount = allMessages.count
+        setMessages(allMessages.results.message)
+        if (totalCount > 10) {
+            setTotalPages(PaginationService.getPageCount(totalCount, limit))
+        }
+    }
+
+    const changePage = (p) => {
+        setPage(p)
     }
 
     useEffect(() => {
         GetMessages()
-    }, [])
+    }, [page])
 
     return (
         <div className="message">
@@ -41,7 +55,7 @@ const Messages = () => {
                                 <td>{message.DZO ? 'Да' : 'Нет'}</td>
                                 <td>{message.subject}</td>
                                 <td>{message.message}</td>
-                                <td>{message.author.full_name}</td>
+                                <td>{message.author}</td>
                                 <td className="last_td">
                                     <button
                                         className="buttom_table"
@@ -54,6 +68,17 @@ const Messages = () => {
                         )}
                     </tbody>
                 </table>
+            </div>
+            <div className="pagination">
+                {pagesArray.map(p => 
+                    <span 
+                        key={p}
+                        onClick={() => changePage(p)}
+                        className={page === p ? 'page_active' : 'page'}
+                    >
+                        <p>{p}</p>
+                    </span>
+                )}
             </div>
         </div>
     )

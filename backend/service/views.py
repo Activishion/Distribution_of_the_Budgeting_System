@@ -2,153 +2,136 @@ from datetime import datetime, timedelta
 from typing import List
 
 from rest_framework import status
-from rest_framework.generics import (ListCreateAPIView, ListAPIView,
-    RetrieveUpdateAPIView)
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from service.models import Message, News, Reporting
-from service.serializers import (MessageSerializer, NewsSerializer, 
-    ReportSerializer, PostReportSerializer, PostNewsSerializer)
-from utils.paginator import APIListPaginator
+from service.pagination import APIPagination
+from service.serializers import (MessageSerializer, GetNewsSerializer, 
+    GetReportSerializer, PostReportSerializer, PostNewsSerializer)
 
 
-class AllMessageUsers(ListCreateAPIView):
+class AllMessageUsers(ListAPIView):
     queryset = Message.objects.filter()  # за последний год
     serializer_class = MessageSerializer
-    pagination_class = APIListPaginator
+    pagination_class = APIPagination
 
-    def list(self, request):
+    def get(self, request):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
-        return Response(
-            {'message': serializer.data},
-            status=status.HTTP_200_OK
-        )
 
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(
-            {'newMessage': serializer.data},
-            status=status.HTTP_201_CREATED
-        )
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({
+                'status': status.HTTP_200_OK,
+                'message': serializer.data
+            })
+
+        return Response({
+            'status': status.HTTP_200_OK,
+            'message': serializer.data
+        })
 
 
 class MessageUsersById(ListAPIView):
-    def list(self, request, pk):
+    def get(self, request, pk):
         queryset = Message.objects.get(pk=pk)
         serializer = MessageSerializer(queryset, many=False)
-        return Response(
-            {'message': serializer.data},
-            status=status.HTTP_200_OK
-        )
+        return Response({
+            'status': status.HTTP_200_OK,
+            'message': serializer.data
+        })
 
 
 class NewsCreateView(ListCreateAPIView):
-    queryset = News.objects.all()
-    serializer_class = NewsSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return PostNewsSerializer
+        elif self.request.method == 'GET':
+            return GetNewsSerializer
 
-    def list(self, request) -> List[News]:
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(
-            {'news': serializer.data},
-            status=status.HTTP_200_OK
-        )
+    def get(self, request) -> List[News]:
+        queryset = News.objects.all()
+        serializer = self.get_serializer_class(queryset, many=True)
 
-    def create(self, request) -> News:
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({
+                'status': status.HTTP_200_OK,
+                'news': serializer.data
+            })
+        
+        return Response({
+            'status': status.HTTP_200_OK,
+            'news': serializer.data
+        })
+
+    def post(self, request) -> News:
         serializer = PostNewsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=False)
         serializer.save()
-        return Response(
-            {'newNews': serializer.data},
-            status=status.HTTP_201_CREATED
-        )
+        return Response({
+            'status': status.HTTP_201_CREATED,
+            'newNews': serializer.data
+        })
 
 
-class NewsUpdateView(APIView):
+class NewsIdView(APIView):
     def get(self, request, pk):
         queryset = News.objects.get(pk=pk)
-        serializer = NewsSerializer(queryset, many=False)
-        return Response(
-            {'news': serializer.data},
-            status=status.HTTP_200_OK
-        )
-
-    def put(self, request, pk):
-        try:
-            instance = News.objects.get(pk=pk)
-        except:
-            return Response(
-                {'error': 'Объект не найден.'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = NewsSerializer(data=request.data, instance=instance)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(
-                {'error': 'Данные не валидны.'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        serializer.save()
-        return Response(
-            {'report': serializer.data},
-            status=status.HTTP_200_OK
-        )
+        serializer = GetNewsSerializer(queryset, many=False)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'news': serializer.data
+        })
 
 
 class ReportCreateView(ListCreateAPIView):
-    queryset = Reporting.objects.all()
-    serializer_class = ReportSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return PostReportSerializer
+        elif self.request.method == 'GET':
+            return GetReportSerializer
+        
+    def get_queryset(self):
+        return Reporting.objects.all()
 
-    def list(self, request) -> List[Reporting]:
+    def get(self, request) -> List[Reporting]:
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(
-            {'reports': serializer.data},
-            status=status.HTTP_200_OK
-        )
+        serializer = GetReportSerializer(queryset, many=True)
 
-    def create(self, request) -> Reporting:
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({
+                'status': status.HTTP_200_OK,
+                'reports': serializer.data
+            })
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'reports': serializer.data
+        })
+
+    def post(self, request) -> Reporting:
         serializer = PostReportSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {'newReport': serializer.data},
-            status=status.HTTP_201_CREATED
-        )
+        return Response({
+            'status': status.HTTP_201_CREATED,
+            'newReport': serializer.data
+        })
 
 
-class ReportUpdateView(APIView):
+class ReportIdView(APIView):
     def get(self, request, pk):
         queryset = Reporting.objects.get(pk=pk)
-        serializer = ReportSerializer(queryset, many=False)
-        return Response(
-            {'report': serializer.data},
-            status=status.HTTP_200_OK
-        )
-
-    def put(self, request, pk):
-        try:
-            instance = Reporting.objects.get(pk=pk)
-        except:
-            return Response(
-                {'error': 'Объект не найден.'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = ReportSerializer(data=request.data, instance=instance)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(
-                {'error': 'Данные не валидны.'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        serializer.save()
-        return Response(
-            {'report': serializer.data},
-            status=status.HTTP_200_OK
-        )
+        serializer = GetReportSerializer(queryset, many=False)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'report': serializer.data
+        })

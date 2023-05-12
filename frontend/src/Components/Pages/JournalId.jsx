@@ -13,7 +13,7 @@ const JournalPage = () => {
 
     async function GetJournalById(id) {
         const journalById = await JournalService.getJournalById(id)
-        setJournalId(journalById)
+        setJournalId(journalById.report)
     }
 
     useEffect(() => {
@@ -26,15 +26,15 @@ const JournalPage = () => {
                 <div className="header_container_left">
                     <RecordDiv 
                         header='Email: '
-                        text={journalId?.user?.email}
+                        text={journalId?.user}
                     />
                     <RecordDiv 
                         header='Имя ползователя: '
-                        text={journalId?.user?.full_name}
+                        text={journalId?.full_name}
                     />
                     <RecordDiv 
                         header='Внешний пользователь: '
-                        text={journalId?.user?.external ? 'Да' : 'Нет'}
+                        text={journalId?.external ? 'Да' : 'Нет'}
                     />
                 </div>
                 <div className="header_container_right">
@@ -46,7 +46,7 @@ const JournalPage = () => {
                         />
                         <RecordDiv 
                             header='Добавлено через портал:'
-                            text={journalId?.user?.added_via_portal ? 'Да' : 'Нет'}
+                            text={journalId?.added_via_portal ? 'Да' : 'Нет'}
                         />
                     </div>
                     <div className="container_create">
@@ -54,48 +54,48 @@ const JournalPage = () => {
                         <RecordDiv 
                             header='Решение модератора: '
                             text={
-                                journalId?.user?.moderator_is_decision
+                                journalId?.moderator_is_decision
                                 ? 'Согласовано'
                                 : 'Не согласовано'}
                         />
-                        {journalId?.user?.moderator
+                        {journalId?.moderator
                             ?<RecordDiv 
                                 header='Модератор: '
-                                text={journalId?.user?.moderator}
+                                text={journalId?.moderator}
                             />
                             :<></>
                         }
-                        {journalId?.user?.data_moderation
+                        {journalId?.data_moderation
                             ?<RecordDiv 
                                 header='Дата согласования: '
-                                text={journalId?.user?.data_moderation}
+                                text={journalId?.data_moderation}
                             />
                             :<></>
                         }
-                        {journalId?.user?.comment
+                        {journalId?.comment
                             ?<RecordDiv 
                                 header='Комменарий: '
-                                text={journalId?.user?.comment}
+                                text={journalId?.comment}
                             />
                             :<></>
                         }
                     </div>
                     
                         <div className="container_create">
-                            {journalId?.user?.date_delete
+                            {journalId?.date_delete
                                 ?<div>
                                     <RecordHeader text='Удаление' />
                                     <RecordDiv 
                                         header='Дата удаления: '
-                                        text={journalId?.user?.date_delete}
+                                        text={journalId.date_delete}
                                     />
                                 </div>
                                 :<></>
                             }
-                            {journalId?.user?.comment_delete
+                            {journalId?.comment_delete
                                 ?<RecordDiv 
                                     header='Комменарий: '
-                                    text={journalId?.user?.comment_delete}
+                                    text={journalId?.comment_delete}
                                 />
                                 :<></>
                             }

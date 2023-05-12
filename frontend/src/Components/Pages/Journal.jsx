@@ -2,21 +2,35 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 import JournalService from '../API/JournalAPI'
+import PaginationService from '../UI/Pagination/Pages'
 
 
 const Journal = () => {
     const nav = useNavigate()
 
     const [journal, setJournal] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
 
-    async function GetJournals(limit = 10, page = 1) {
+    let pagesArray = PaginationService.getPagesArray(totalPages)
+    
+    async function GetJournals() {
         const allJournal = await JournalService.getAllJournals(limit, page)
-        setJournal(allJournal)
+        const totalCount = allJournal.count
+        setJournal(allJournal.results.reports)
+        if (totalCount > 10) {
+            setTotalPages(PaginationService.getPageCount(totalCount, limit))
+        }
+    }
+
+    const changePage = (p) => {
+        setPage(p)
     }
 
     useEffect(() => {
         GetJournals()
-    }, [])
+    }, [page])
 
     return (
         <div className="journal">
@@ -30,8 +44,8 @@ const Journal = () => {
                             <th>Дата</th>
                             <th>Изменение</th>
                             <th>Статус</th>
+                            <th>Отчет</th>
                             <th>Email</th>
-                            <th>Пользователь</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -40,19 +54,19 @@ const Journal = () => {
                             <tr key={record.id}>
                                 <td>{record.data}</td>
                                 <td>
-                                    {record.subscription
-                                    ? 'Включение'
-                                    : 'Исключение'
+                                    {record?.subscription
+                                        ? 'Включение'
+                                        : 'Исключение'
                                     }
                                 </td>
                                 <td>
                                     {record?.user?.moderator_is_decision
-                                    ? 'Согласовано'
-                                    : 'Ожидает'
+                                        ? 'Согласовано'
+                                        : 'Ожидает'
                                     }
                                 </td>
-                                <td>{record.email}</td>
-                                <td>{record.full_name}</td>
+                                <td>{record.report}</td>
+                                <td>{record.user}</td>
                                 <td className="last_td">
                                     <button 
                                         className="buttom_table"
@@ -65,6 +79,17 @@ const Journal = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div className="pagination">
+                {pagesArray.map(p => 
+                    <span 
+                        key={p}
+                        onClick={() => changePage(p)}
+                        className={page === p ? 'page_active' : 'page'}
+                    >
+                        <p>{p}</p>
+                    </span>
+                )}
             </div>
         </div>
     )

@@ -4,16 +4,16 @@ import axios from 'axios'
 export default class MessageService {
     static async getAllMessages(limit = 10, page = 1) {
         const response = await axios
-            .get(`http://127.0.0.1:8000/api/v1/service/messages?limit=${limit}`, {
+            .get(`http://127.0.0.1:8000/api/v1/service/messages`, {
                 params: {
-                    _limit: limit,
-                    _page: page
+                    limit: limit,
+                    page: page
                 },
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-        return response.data.message
+        return response.data
     }
 
     static async getMessageById(id) {
@@ -23,6 +23,6 @@ export default class MessageService {
                     'Content-Type': 'application/json'
                 }
             })
-        return response.data.message
+        return response.data
     }
 }
