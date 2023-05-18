@@ -13,12 +13,18 @@ from service.serializers import (MessageSerializer, GetNewsSerializer,
 
 
 class AllMessageUsers(ListAPIView):
-    queryset = Message.objects.filter()  # за последний год
     serializer_class = MessageSerializer
     pagination_class = APIPagination
 
+    @staticmethod
+    def time_delta():
+        today = datetime.now()
+        year_back = timedelta(weeks=52)
+        return today-year_back
+
     def get(self, request):
-        queryset = self.get_queryset()
+        data = self.time_delta()
+        queryset = Message.objects.filter(date__gt=data)
         serializer = self.get_serializer(queryset, many=True)
 
         page = self.paginate_queryset(queryset)

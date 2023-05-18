@@ -23,7 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 
-backend:
+#backend:
 .venv
 .env
 __pycache__
