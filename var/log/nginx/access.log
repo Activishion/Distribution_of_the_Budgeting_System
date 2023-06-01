@@ -1,0 +1,4 @@
+172.18.0.1 - - [01/Jun/2023:15:33:51 +0000] "GET / HTTP/1.1" 502 559 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+172.18.0.1 - - [01/Jun/2023:15:33:54 +0000] "GET /favicon.ico HTTP/1.1" 502 559 "http://127.0.0.1:81/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+172.19.0.1 - - [01/Jun/2023:15:38:56 +0000] "GET / HTTP/1.1" 502 559 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+172.19.0.1 - - [01/Jun/2023:15:38:58 +0000] "GET /favicon.ico HTTP/1.1" 502 559 "http://127.0.0.1:81/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
