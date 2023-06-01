@@ -1,5 +1,7 @@
 from pathlib import Path
+from dotenv import dotenv_values
 
+env_variables = dotenv_values('../.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,7 +9,7 @@ SECRET_KEY = 'django-insecure-lv+(gqvp8*upkt9ld8t2gwl+)2d4g2h6_868l=w5+$+3oelyw0
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [

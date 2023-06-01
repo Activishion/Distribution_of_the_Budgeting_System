@@ -60,7 +60,7 @@ class NewsCreateView(ListCreateAPIView):
 
     def get(self, request) -> List[News]:
         queryset = News.objects.all()
-        serializer = self.get_serializer_class(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
