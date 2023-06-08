@@ -29,7 +29,7 @@ const NewNews = () => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: 'http://127.0.0.1:8000/api/v1/service/news/',
+            url: 'http://localhost:1337/api/v1/service/news/',
             data: {
                 user: emailNews,
                 subscription: subscriptionNews,

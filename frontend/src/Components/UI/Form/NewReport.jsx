@@ -32,7 +32,7 @@ const NewReport = () => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: 'http://127.0.0.1:8000/api/v1/service/report/',
+            url: 'http://localhost:1337/api/v1/service/report/',
             data: {
                 report: report,
                 user: email,

@@ -3,18 +3,18 @@ version: '3'
 services:
 
   backend:
-    build: 
+    build:
       dockerfile: Dockerfile.backend
       context: .
-    ports:
-      - 8888:8000
+    expose:
+      - 8000
     volumes:
-      - ./backend:/app/backend
-      - static_volume:/app/static
-    command: >
-      sh -c "python3 backend/manage.py runserver 0.0.0.0:8000"
+      - static_volume:/home/app/web/staticfiles
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     restart: always
-  
+    networks:
+      - common_network
+
   # frontend:
   #   build:
   #     dockerfile: Dockerfile.frontend
@@ -26,21 +26,22 @@ services:
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile.Server
+      dockerfile: Dockerfile
     container_name: nginx
     image: nginx
     volumes:
-      - static_volume:/app/static
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./var/log/nginx:/var/log/nginx
+      - static_volume:/home/app/web/staticfiles
       #- ./volumes/etc/nginx/ssl:/etc/nginx/ssl:ro #сертификаты
     depends_on:
       - backend
-    expose:
-      - 80
     ports:
-      - 81:80
+      - 1337:80
+    networks:
+      - common_network
 
 
 volumes:
   static_volume:
+networks:
+  common_network:
+    driver: bridge
