@@ -383,3 +383,11 @@
 2023/06/05 14:55:54 [error] 20#20: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.16.1, server: , request: "GET / HTTP/1.1", upstream: "http://192.168.16.2:8888/", host: "localhost:1337"
 2023/06/05 14:55:58 [error] 20#20: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.16.1, server: , request: "GET /admin/ HTTP/1.1", upstream: "http://192.168.16.2:8888/admin/", host: "localhost:1337"
 2023/06/05 14:57:06 [emerg] 1#1: "upstream" directive is not allowed here in /etc/nginx/nginx.conf:1
+2023/06/08 09:58:13 [notice] 1#1: using the "epoll" event method
+2023/06/08 09:58:13 [notice] 1#1: nginx/1.21.6
+2023/06/08 09:58:13 [notice] 1#1: built by gcc 10.3.1 20211027 (Alpine 10.3.1_git20211027) 
+2023/06/08 09:58:13 [notice] 1#1: OS: Linux 5.15.49-linuxkit
+2023/06/08 09:58:13 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2023/06/08 09:58:13 [notice] 1#1: start worker processes
+2023/06/08 09:58:13 [notice] 1#1: start worker process 22
+2023/06/08 09:58:13 [notice] 1#1: start worker process 23

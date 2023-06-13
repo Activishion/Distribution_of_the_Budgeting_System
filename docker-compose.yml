@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   backend:
     build:
       dockerfile: Dockerfile.backend
@@ -15,14 +14,6 @@ services:
     networks:
       - common_network
 
-  # frontend:
-  #   build:
-  #     dockerfile: Dockerfile.frontend
-  #     context: .
-  #   container_name: frontend_react
-  #   volumes:
-  #     - ./frontend:/app/frontend
-
   nginx:
     build:
       context: ./nginx
@@ -31,6 +22,7 @@ services:
     image: nginx
     volumes:
       - static_volume:/home/app/web/staticfiles
+      - ./var/log/nginx:/var/log/nginx
       #- ./volumes/etc/nginx/ssl:/etc/nginx/ssl:ro #сертификаты
     depends_on:
       - backend

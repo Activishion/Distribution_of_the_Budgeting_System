@@ -84,12 +84,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     # 'default': {
-    #     "ENGINE": '',
-    #     "NAME": '',
-    #     "USER": '',
-    #     "PASSWORD": '',
-    #     "HOST": '',
-    #     "PORT": '',
+    #     "ENGINE": 'django.db.backends.postgresql',
+    #     "NAME": 'postgres',
+    #     "USER": 'huml_controler',
+    #     "PASSWORD": 'Xn0MlepgeS7r5ngHt',
+    #     "HOST": '10.28.110.110',
+    #     "PORT": '5432',
     # }
 }
 
