@@ -9,7 +9,7 @@ import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
 
 
-const NewNews = () => {
+const NewNews = ({ apiPort }) => {
     const [emailNews, setEmailNews] = useState('')
     const [subscriptionNews, setSubscriptionNews] = useState('')
     const [fullName, setFullName] = useState('')
@@ -29,7 +29,7 @@ const NewNews = () => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: 'http://localhost:1337/api/v1/service/news/',
+            url: `http://localhost:${apiPort}/api/v1/service/news/`,
             data: {
                 user: emailNews,
                 subscription: subscriptionNews,

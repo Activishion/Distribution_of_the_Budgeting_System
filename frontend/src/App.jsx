@@ -4,10 +4,12 @@ import AppRouter from "./Components/UI/Router/AppRouter"
 
 
 const App = () => {
+    const apiPort = 1337
+
     return (
         <div className="wrapper">
             <Header />
-            <AppRouter />
+            <AppRouter apiPort={apiPort}/>
             <Footer />
         </div>
     )

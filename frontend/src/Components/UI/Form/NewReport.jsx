@@ -9,7 +9,7 @@ import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
 
 
-const NewReport = () => {
+const NewReport = ({ apiPort }) => {
     const [report, setReport] = useState('')
     const [email, setEmail] = useState('')
     const [subscription, setSubscription] = useState('')
@@ -32,7 +32,7 @@ const NewReport = () => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: 'http://localhost:1337/api/v1/service/report/',
+            url: `http://localhost:${apiPort}/api/v1/service/report/`,
             data: {
                 report: report,
                 user: email,

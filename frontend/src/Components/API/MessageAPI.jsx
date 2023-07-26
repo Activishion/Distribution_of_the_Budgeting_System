@@ -2,9 +2,9 @@ import axios from 'axios'
 
 
 export default class MessageService {
-    static async getAllMessages(limit = 10, page = 1) {
+    static async getAllMessages(limit = 10, page = 1, apiPort) {
         const response = await axios
-            .get(`http://localhost:1337/api/v1/service/messages`, {
+            .get(`http://localhost:${apiPort}/api/v1/service/messages`, {
                 params: {
                     limit: limit,
                     page: page
@@ -16,9 +16,9 @@ export default class MessageService {
         return response.data
     }
 
-    static async getMessageById(id) {
+    static async getMessageById(id, apiPort) {
         const response = await axios
-            .get('http://localhost:1337/api/v1/service/messages/' + id, {
+            .get(`http://localhost:${apiPort}/api/v1/service/messages/` + id, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

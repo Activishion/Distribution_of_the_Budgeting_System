@@ -5,18 +5,18 @@ import JournalService from '../API/JournalAPI'
 import PaginationService from '../UI/Pagination/Pages'
 
 
-const Journal = () => {
+const Journal = ({ apiPort }) => {
     const nav = useNavigate()
 
     const [journal, setJournal] = useState([])
     const [totalPages, setTotalPages] = useState(0)
-    const [limit, setLimit] = useState(10)
+    const [limit, ] = useState(10)
     const [page, setPage] = useState(1)
 
     let pagesArray = PaginationService.getPagesArray(totalPages)
     
     async function GetJournals() {
-        const allJournal = await JournalService.getAllJournals(limit, page)
+        const allJournal = await JournalService.getAllJournals(limit, page, apiPort)
         const totalCount = allJournal.count
         setJournal(allJournal.results.reports)
         if (totalCount > 10) {

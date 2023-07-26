@@ -9,7 +9,7 @@ const Messages = () => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
     const [totalPages, setTotalPages] = useState(0)
-    const [limit, setLimit] = useState(10)
+    const [limit, ] = useState(10)
     const [page, setPage] = useState(1)
     // console.log(messages)
     let pagesArray = PaginationService.getPagesArray(totalPages)

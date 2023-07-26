@@ -10,7 +10,7 @@ class UserView(APIView):
     def get(self, request, pk):
         queryset = UserModel.objects.get(pk=pk)
         serializer = UserSerializer(queryset, many=False)
-        return Response(
-            {'user': serializer.data},
-            status=status.HTTP_200_OK
-        )
+        return Response({
+            'user': serializer.data,
+            'status': status.HTTP_200_OK
+        })

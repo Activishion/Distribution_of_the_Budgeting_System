@@ -1,15 +1,14 @@
 from pathlib import Path
-from dotenv import dotenv_values
+from global_variables import *
 
-env_variables = dotenv_values('../.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-lv+(gqvp8*upkt9ld8t2gwl+)2d4g2h6_868l=w5+$+3oelyw0'
+SECRET_KEY = SECRET_KEY
 
-DEBUG = True
+DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ALLOWED_HOSTS
 CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
@@ -85,11 +84,11 @@ DATABASES = {
     },
     # 'default': {
     #     "ENGINE": 'django.db.backends.postgresql',
-    #     "NAME": 'postgres',
-    #     "USER": 'huml_controler',
-    #     "PASSWORD": 'Xn0MlepgeS7r5ngHt',
-    #     "HOST": '10.28.110.110',
-    #     "PORT": '5432',
+    #     "NAME": POSTGRES_NAME,
+    #     "USER": POSTGRES_USER,
+    #     "PASSWORD": POSTGRES_PASSWORD,
+    #     "HOST": POSTGRES_HOST,
+    #     "PORT": POSTGRES_PORT,
     # }
 }
 
