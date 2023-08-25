@@ -5,6 +5,15 @@ from rest_framework.serializers import ModelSerializer, CharField
 from service.models import Message, News, Reporting
 
 
+class BaseNewsSerializers(ModelSerializer):
+    def validate(self, data):
+        if data['subscription'] == 'Подписаться':
+            data['subscription'] = True
+        if data['subscription'] == 'Отписаться':
+            data['subscription'] = False
+        return data
+
+
 class MessageSerializer(ModelSerializer):
     class Meta:
         model: Message = Message
@@ -32,20 +41,13 @@ class GetReportSerializer(ModelSerializer):
         return Reporting.objects.create(**validated_data)
 
 
-class PostReportSerializer(ModelSerializer):
+class PostReportSerializer(BaseNewsSerializers):
     subscription = CharField()
     user = CharField()
 
     class Meta:
         model: Reporting = Reporting
-        fields: List[str] = ['report', 'full_name', 'user', 'subscription']
-
-    def validate(self, data):
-        if data['subscription'] == 'Подписаться':
-            data['subscription'] = True
-        if data['subscription'] == 'Отписаться':
-            data['subscription'] = False
-        return data
+        fields: List[str] = ['report', 'user', 'subscription']
 
 
 class GetNewsSerializer(ModelSerializer):
@@ -54,16 +56,9 @@ class GetNewsSerializer(ModelSerializer):
         fields: List[str] = ['id', 'full_name', 'user', 'subscription']
 
 
-class PostNewsSerializer(ModelSerializer):
+class PostNewsSerializer(BaseNewsSerializers):
     subscription = CharField()
 
     class Meta:
         model: News = News
         fields: List[str] = ['full_name', 'user', 'subscription']
-
-    def validate(self, data):
-        if data['subscription'] == 'Подписаться':
-            data['subscription'] = True
-        if data['subscription'] == 'Отписаться':
-            data['subscription'] = False
-        return data

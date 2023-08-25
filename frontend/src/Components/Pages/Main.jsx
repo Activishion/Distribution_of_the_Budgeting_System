@@ -1,3 +1,5 @@
+import FooterContainer from "../UI/Container/FooterContainer"
+
 const Main = () => {
     return (
         <div className="main">
@@ -19,12 +21,11 @@ const Main = () => {
                     </a>.
                 </p>
                 <div className="main_text_container">
-                    <p className="text">
-                        Руководитель проекта: Лисиченко Андрей
-                    </p>
-                    <p className="text">
-                        Техническая поддержка: Хайдуков Алексей
-                    </p>
+                    <FooterContainer
+                        position='Техническая поддержка: '
+                        email='aleksey.khaydukov@sibir.rt.ru'
+                        href='mailto:aleksey.khaydukov@sibir.rt.ru'
+                    />
                 </div>
             </div>
         </div>

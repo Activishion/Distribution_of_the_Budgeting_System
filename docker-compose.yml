@@ -1,39 +1,72 @@
 version: '3'
 
+volumes:
+  pg_data:
+  pg_admin:
+  static_volume:
+  media:
+
 services:
-  backend:
-    build:
-      dockerfile: Dockerfile.backend
-      context: .
-    expose:
-      - 8000
-    volumes:
-      - static_volume:/home/app/web/staticfiles
-    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+  postresql:
+    container_name: postresql
+    image: postgres:15
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_NAME: ${POSTGRES_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
     restart: always
-    networks:
-      - common_network
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  pg_admin:
+    container_name: pg_admin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_SERVER_MODE: ${PGADMIN_DEFAULT_SERVER_MODE}
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: ${PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION}
+    volumes:
+      - pg_admin:/var/lib/pgadmin
+    ports:
+      - ${PGADMIN_PORT}:80
+    restart: unless-stopped
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    env_file: .env
+    depends_on:
+      - postresql
+    restart: always
+    volumes:
+      - static_volume:/backend_static
+      - media:/app/media
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static_volume:/frontend_static
 
   nginx:
+    container_name: nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    container_name: nginx
-    image: nginx
+    env_file: .env
     volumes:
-      - static_volume:/home/app/web/staticfiles
-      - ./var/log/nginx:/var/log/nginx
-      #- ./volumes/etc/nginx/ssl:/etc/nginx/ssl:ro #сертификаты
-    depends_on:
-      - backend
+      - static_volume:/staticfiles/
+      - media:/media
     ports:
-      - 1337:80
-    networks:
-      - common_network
-
-
-volumes:
-  static_volume:
-networks:
-  common_network:
-    driver: bridge
+      - ${NGINX_PORT}:80
+    restart: always 

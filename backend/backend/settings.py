@@ -8,7 +8,7 @@ SECRET_KEY = SECRET_KEY
 
 DEBUG = DEBUG
 
-ALLOWED_HOSTS = ALLOWED_HOSTS
+ALLOWED_HOSTS = ['*',]
 CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
@@ -38,7 +38,8 @@ MIDDLEWARE = [
 
 CORS_ORIGINS_WHITELIST = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -79,17 +80,13 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    # 'default': {
-    #     "ENGINE": 'django.db.backends.postgresql',
-    #     "NAME": POSTGRES_NAME,
-    #     "USER": POSTGRES_USER,
-    #     "PASSWORD": POSTGRES_PASSWORD,
-    #     "HOST": POSTGRES_HOST,
-    #     "PORT": POSTGRES_PORT,
-    # }
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": POSTGRES_NAME,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+        "HOST": POSTGRES_HOST,
+        "PORT": POSTGRES_PORT,
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -115,7 +112,6 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = []
 
 # Media files
 MEDIA_URL = "/media/"

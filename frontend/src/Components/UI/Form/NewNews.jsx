@@ -7,9 +7,10 @@ import ButtonSubmitForm from "../Buttom/ButtonSubmitForm"
 import LabelForSelectIsNull from "../Container/LabelForSelectIsNull"
 import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
+import ModalSubscription from "../ModalWindow/SubscriptionCheck"
 
 
-const NewNews = ({ apiPort }) => {
+const NewNews = ({ apiPort, apiHost }) => {
     const [emailNews, setEmailNews] = useState('')
     const [subscriptionNews, setSubscriptionNews] = useState('')
     const [fullName, setFullName] = useState('')
@@ -25,11 +26,13 @@ const NewNews = ({ apiPort }) => {
     const [statusSubmitFormNews, setStatusSubmitFormNews] = useState('')
     const [formValidNews, setFormValidNews] = useState(false)
 
+    const [modalWindowActive, setModalWindowActive] = useState(false)
+
     const handleNewsSubmit = (e) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://localhost:${apiPort}/api/v1/service/news/`,
+            url: `http://${apiHost}:${apiPort}/api/v1/service/news`,
             data: {
                 user: emailNews,
                 subscription: subscriptionNews,
@@ -62,7 +65,7 @@ const NewNews = ({ apiPort }) => {
     const subscriptionHandlerNews = (e) => {
         setSubscriptionNews(e.target.value)
         if (!e.target.value) {
-            setSubscriptionErrorNews('Выберите подписку')
+            setSubscriptionErrorNews('Выберите действие')
         } else {
             setSubscriptionErrorNews('')
         }
@@ -91,6 +94,11 @@ const NewNews = ({ apiPort }) => {
         }
     }
 
+    const buttonSubmit = () => {
+        setModalWindowActive(true)
+        setFormValidNews()
+    }
+
     useEffect(() => {
         if (emailErrorNews || subscriptionErrorNews || fullNameErrorNews) {
             setFormValidNews(false)
@@ -100,73 +108,99 @@ const NewNews = ({ apiPort }) => {
     }, [emailErrorNews, subscriptionErrorNews, fullNameErrorNews])
 
     return (
-        <form onSubmit={handleNewsSubmit}>
-            <div className="forms">
-                <p className="heade_form">Новости</p>
-                <Dirty
-                    className='dirtyFioNews'
-                    dirty={fullNameDirtyNews}
-                    error={fullNameErrorNews}
-                />
-                <div className="input-group">
-                    <input
-                        type="text"
-                        id='fullName'
-                        name="fullName"
-                        value={fullName}
-                        onChange={(e) => fullNameHandlerNews(e)}
-                        onBlur={e => blurHandlerNews(e)}
-                        placeholder=" "
+        <div className="containerForm">
+            <form onSubmit={handleNewsSubmit}>
+                <div className="forms">
+                    <p className="heade_form">Подписка на информационные сообщения пользователям Системы Бюджетирования</p>
+                    <Dirty
+                        className='dirtyFioNews'
+                        dirty={fullNameDirtyNews}
+                        error={fullNameErrorNews}
                     />
-                    <label htmlFor='fullName'>ФИО</label>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            id='fullName'
+                            name="fullName"
+                            value={fullName}
+                            onChange={(e) => fullNameHandlerNews(e)}
+                            onBlur={e => blurHandlerNews(e)}
+                            placeholder=" "
+                        />
+                        <label htmlFor='fullName'>ФИО</label>
+                    </div>
+                    <Dirty
+                        className='dirtyReportNews'
+                        dirty={emailDirtyNews}
+                        error={emailErrorNews}
+                    />
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            id='email'
+                            name="emailNews"
+                            value={emailNews}
+                            onChange={(e) => emailHandlerNews(e)}
+                            onBlur={e => blurHandlerNews(e)}
+                            placeholder=" "
+                        />
+                        <label htmlFor='email'>Email</label>
+                    </div>
+                    <Dirty
+                        className='dirtyReportNews'
+                        dirty={subscriptionDirtyNews}
+                        error={subscriptionErrorNews}
+                    />
+                    <div className="input-group">
+                        <select
+                            type="text"
+                            id='reportNews'
+                            name="subscriptionNews"
+                            value={subscriptionNews}
+                            onChange={(e) => subscriptionHandlerNews(e)}
+                            onBlur={e => blurHandlerNews(e)}
+                            placeholder=" "
+                        >
+                            <OptionsForSelect />
+                        </select>
+                        <LabelForSelectIsNull
+                            subscription={subscriptionNews}
+                            text='Действие'
+                        />
+                        <LabelForSelectIsNotNull
+                            subscription={subscriptionNews}
+                            text='Действие'
+                        />
+                    </div>
+                    
+                        <ButtonSubmitForm valid={formValidNews} />
+                    
+                    <PushReportContainer statusSubmit={statusSubmitFormNews} />
                 </div>
-                <Dirty
-                    className='dirtyReportNews'
-                    dirty={emailDirtyNews}
-                    error={emailErrorNews}
-                />
-                <div className="input-group">
-                    <input
-                        type="text"
-                        id='email'
-                        name="emailNews"
-                        value={emailNews}
-                        onChange={(e) => emailHandlerNews(e)}
-                        onBlur={e => blurHandlerNews(e)}
-                        placeholder=" "
+            </form>
+            {statusSubmitFormNews == '' ?
+                <div className="noForm">
+                    <ModalSubscription
+                        active={modalWindowActive}
+                        setActive={setModalWindowActive}
+                        apiPort={apiPort}
+                        apiHost={apiHost}
                     />
-                    <label htmlFor='email'>Email</label>
+                    <div className="buttonGroup">
+                        <div className="modalWindow">
+                            <button
+                                className="modalWindowButton"
+                                onClick={buttonSubmit}
+                                type="button"
+                            >
+                                Проверить подписку
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <Dirty
-                    className='dirtyReportNews'
-                    dirty={subscriptionDirtyNews}
-                    error={subscriptionErrorNews}
-                />
-                <div className="input-group">
-                    <select
-                        type="text"
-                        id='reportNews'
-                        name="subscriptionNews"
-                        value={subscriptionNews}
-                        onChange={(e) => subscriptionHandlerNews(e)}
-                        onBlur={e => blurHandlerNews(e)}
-                        placeholder=" "
-                    >
-                        <OptionsForSelect />
-                    </select>
-                    <LabelForSelectIsNull
-                        subscription={subscriptionNews}
-                        text='Подписка'
-                    />
-                    <LabelForSelectIsNotNull
-                        subscription={subscriptionNews}
-                        text='Подписка'
-                    />
-                </div>
-                <ButtonSubmitForm valid={formValidNews} />
-                <PushReportContainer statusSubmit={statusSubmitFormNews} />
-            </div>
-        </form>
+                : <></>
+            }
+        </div>
     )
 }
 

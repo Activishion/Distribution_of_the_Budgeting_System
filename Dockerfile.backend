@@ -3,7 +3,7 @@ FROM python:3.9
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-RUN mkdir -p /home/app/web/staticfiles
+RUN mkdir -p //app/web/staticfiles
 WORKDIR /home/app/web
 
 COPY ./backend .

@@ -23,19 +23,23 @@ const Header = () => {
                     <nav>
                         <HeaderLink
                             to='/'
-                            text='Главная'
+                            text='Рассылка Системы Бюджетирования'
                         />
                         <HeaderLink
-                            to='/subscriptions'
-                            text='Подписки'
+                            to='/reporting'
+                            text='Рассылаемые отчеты'
                         />
                         <HeaderLink
                             to='/messages'
-                            text='Сообщения'
+                            text='Архив рассылки'
                         />
                         <HeaderLink
                             to='/journal'
                             text='Журнал активности'
+                        />
+                        <HeaderLink
+                            to='/info'
+                            text='О сайте'
                         />
                     </nav>
                 </div>

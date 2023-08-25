@@ -1,4 +1,5 @@
 const LabelForSelectIsNull = ({ subscription, text  }) => {
+    
     return (
         <>
             {subscription === ''

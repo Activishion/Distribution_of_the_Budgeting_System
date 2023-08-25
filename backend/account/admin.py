@@ -8,7 +8,7 @@ from account.models import UserModel
 class CustomUserAdmin(BaseUserAdmin):
     fieldsets = (
         ('Персональная информация', {"fields": ("full_name", "email", 'external',
-            "is_active", "is_admin", "is_superuser")}),
+            "news_subscription", "is_active", "is_admin", "is_superuser")}),
         ('Последняя активность', {"fields": ("last_login", )}),
         ('Группы', {"fields": ("groups", )}),
         ('Права доступа', {"fields": ("user_permissions", )}),

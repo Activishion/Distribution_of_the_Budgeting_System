@@ -1,6 +1,6 @@
 from django.contrib.admin import ModelAdmin, register
 
-from .models import Message, Reporting, News
+from .models import Message, Reporting
 
 
 @register(Message)
@@ -8,12 +8,6 @@ class MessageAdmin(ModelAdmin):
     list_display = ('subject', 'message', "date", "author", 'PAO', 'DZO')
     list_filter = ('date', "PAO", "DZO")
     ordering = ("-date", )
-
-
-@register(News)
-class NewsAdmin(ModelAdmin):
-    list_display = ("user", 'full_name', 'subscription')
-    list_filter = ("subscription", )
 
 
 @register(Reporting)
@@ -24,7 +18,7 @@ class ReportingAdmin(ModelAdmin):
     readonly_fields = ('data', )
     fieldsets = (
         ('', {"fields":("user", 'full_name', "report", 'data', 'subscription')}),
-        ('Модерация', {"fields": ('added_via_portal', 'moderator_is_decision', 'moderator', 
+        ('Moderation', {"fields": ('added_via_portal', 'moderator_is_decision', 'moderator', 
             'data_moderation', 'comment')}),
-        ('Удаление', {"fields": ('date_delete', 'comment_delete')}),
+        ('Removal', {"fields": ('date_delete', 'comment_delete')}),
     )

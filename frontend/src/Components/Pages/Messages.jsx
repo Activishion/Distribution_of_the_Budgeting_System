@@ -5,17 +5,17 @@ import MessageService from '../API/MessageAPI'
 import PaginationService from '../UI/Pagination/Pages'
 
 
-const Messages = () => {
+const Messages = ({ apiPort, apiHost }) => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
     const [totalPages, setTotalPages] = useState(0)
     const [limit, ] = useState(10)
     const [page, setPage] = useState(1)
-    // console.log(messages)
+
     let pagesArray = PaginationService.getPagesArray(totalPages)
 
     async function GetMessages() {
-        const allMessages = await MessageService.getAllMessages(limit, page)
+        const allMessages = await MessageService.getAllMessages(limit, page, apiPort, apiHost)
         const totalCount = allMessages.count
         setMessages(allMessages.results.message)
         if (totalCount > 10) {
@@ -33,7 +33,7 @@ const Messages = () => {
 
     return (
         <div className="message">
-            <h1 className="message_header">Архив сообщений за последний год</h1>
+            <h1 className="message_header">Архив рассылки</h1>
             <div className="container">
                 <table rules="groups">
                     <thead>

@@ -9,21 +9,18 @@ import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
 
 
-const NewReport = ({ apiPort }) => {
+const NewReport = ({ apiPort, apiHost }) => {
     const [report, setReport] = useState('')
     const [email, setEmail] = useState('')
     const [subscription, setSubscription] = useState('')
-    const [fullName, setFullName] = useState('')
 
     const [reportDirty, setReportDirty] = useState(false)
     const [emailDirty, setEmailDirty] = useState(false)
     const [subscriptionDirty, setSubscriptionDirty] = useState(false)
-    const [fullNameDirty, setFullNameDirty] = useState(false)
 
     const [reportError, setReportError] = useState('Выберите нужный отчет')
     const [emailError, setEmailError] = useState('Некорректный email')
     const [subscriptionError, setSubscriptionError] = useState('Выберите подписку')
-    const [fullNameError, setFullNameError] = useState('Введите ФИО')
 
     const [statusSubmitForm, setStatusSubmitForm] = useState('')
     const [formValid, setFormValid] = useState(false)
@@ -32,12 +29,11 @@ const NewReport = ({ apiPort }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://localhost:${apiPort}/api/v1/service/report/`,
+            url: `http://${apiHost}:${apiPort}/api/v1/service/report`,
             data: {
                 report: report,
                 user: email,
-                subscription: subscription,
-                full_name: fullName
+                subscription: subscription
             },
             headers: {'Content-Type': 'application/json'}
         })
@@ -51,7 +47,6 @@ const NewReport = ({ apiPort }) => {
         setReport('')
         setEmail('')
         setSubscription('')
-        setFullName('')
     }
 
     const reportHandler = (e) => {
@@ -76,18 +71,9 @@ const NewReport = ({ apiPort }) => {
     const subscriptionHandler = (e) => {
         setSubscription(e.target.value)
         if (!e.target.value) {
-            setSubscriptionError('Выберите подписку')
+            setSubscriptionError('Выберите действие')
         } else {
             setSubscriptionError('')
-        }
-    }
-
-    const fullNameHandler = (e) => {
-        setFullName(e.target.value)
-        if (!e.target.value) {
-            setFullNameError()
-        } else {
-            setFullNameError('')
         }
     }
 
@@ -102,41 +88,21 @@ const NewReport = ({ apiPort }) => {
             case 'subscription':
                 setSubscriptionDirty(true)
                 break
-            case 'fullName':
-                setFullNameDirty(true)
-                break
         }
     }
 
     useEffect(() => {
-        if (reportError || emailError || subscriptionError || fullNameError) {
+        if (reportError || emailError || subscriptionError) {
             setFormValid(false)
         } else {
             setFormValid(true)
         }
-    }, [reportError, emailError, subscriptionError, fullNameError])
+    }, [reportError, emailError, subscriptionError])
 
     return (
         <form onSubmit={handleReportSubmit}>
             <div className="forms">
-                <p className="heade_form">Отчетность БЭФС</p>
-                <Dirty
-                    className='dirtyFioReport'
-                    dirty={fullNameDirty}
-                    error={fullNameError}
-                />
-                <div className="input-group">
-                    <input
-                        type="text"
-                        id='fullName'
-                        name="fullName"
-                        value={fullName}
-                        onChange={(e) => fullNameHandler(e)}
-                        onBlur={e => blurHandler(e)}
-                        placeholder=" "
-                    />
-                    <label htmlFor='fullName'>ФИО</label>
-                </div>
+                <p className="heade_form">Подписка на рассылаемые версии интерактивной отчетности БЭФС</p>
                 <Dirty
                     className='dirtyReport'
                     dirty={reportDirty}
@@ -202,11 +168,11 @@ const NewReport = ({ apiPort }) => {
                     </select>
                     <LabelForSelectIsNull
                         subscription={subscription}
-                        text='Подписка'
+                        text='Действие'
                     />
                     <LabelForSelectIsNotNull
                         subscription={subscription}
-                        text='Подписка'
+                        text='Действие'
                     />
                 </div>
                 <ButtonSubmitForm valid={formValid} />

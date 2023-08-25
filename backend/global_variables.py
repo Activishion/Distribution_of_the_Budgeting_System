@@ -1,9 +1,16 @@
-SECRET_KEY = 'django-insecure-lv+(gqvp8*upkt9ld8t2gwl+)2d4g2h6_868l=w5+$+3oelyw0'
-DEBUG = True
+from starlette.config import Config
+
+
+config = Config('../.env')
+
+
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG')
 ALLOWED_HOSTS = ['*',]
 
-POSTGRES_NAME = 'postgres'
-POSTGRES_USER = 'huml_controler'
-POSTGRES_PASSWORD = 'Xn0MlepgeS7r5ngHt'
-POSTGRES_HOST = '10.28.110.110'
-POSTGRES_PORT = '5432'
+POSTGRES_NAME = config('POSTGRES_NAME')
+POSTGRES_USER = config('POSTGRES_USER')
+POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
+# POSTGRES_HOST = '10.28.110.110'
+POSTGRES_HOST = config('POSTGRES_HOST')
+POSTGRES_PORT = config('POSTGRES_PORT')

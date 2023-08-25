@@ -1,16 +1,19 @@
-from rest_framework import status
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 
 from account.models import UserModel
-from account.serializers import UserSerializer
+from account.serializers import SubscriptionСheck
 
 
-class UserView(APIView):
-    def get(self, request, pk):
-        queryset = UserModel.objects.get(pk=pk)
-        serializer = UserSerializer(queryset, many=False)
+class UserView(CreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return SubscriptionСheck
+        
+    def post(self, request):
+        """ Checking the status of a news subscription. """
+        queryset = get_object_or_404(UserModel, email=request.data['email'])
         return Response({
-            'user': serializer.data,
-            'status': status.HTTP_200_OK
+            'status_subscription': queryset.news_subscription,
         })

@@ -1,14 +1,12 @@
-import NewReport from '../UI/Form/NewReport'
 import NewNews from '../UI/Form/NewNews'
 
 
-const Subscriptions = ({ apiPort }) => {
+const Subscriptions = ({ apiPort, apiHost }) => {
 
     return (
         <div className="subscriptions">
             <div className="container_forms">
-                <NewReport apiPort={apiPort} />
-                <NewNews apiPort={apiPort} />
+                <NewNews apiPort={apiPort} apiHost={apiHost} />
             </div>
         </div>
     )

@@ -5,13 +5,13 @@ import MessageService from '../API/MessageAPI'
 import MessageText from '../UI/Container/MessageText'
 
 
-const MessagePage = () => {
+const MessagePage = ({ apiPort, apiHost }) => {
     const nav = useNavigate()
     const { id } = useParams()
     const [messageId, setMessageId] = useState([])
 
     async function GetMessageById(id) {
-        const messageById = await MessageService.getMessageById(id)
+        const messageById = await MessageService.getMessageById(id, apiPort, apiHost)
         setMessageId(messageById.message)
     }
 

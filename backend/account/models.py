@@ -35,15 +35,17 @@ class UserModel(AbstractBaseUser):
         max_length=255,
         unique=True
     )
-    full_name = CharField('ФИО', max_length=200)
-    external = BooleanField('Внешний пользователь', default=False)
+    full_name = CharField('Full_name', max_length=200)
+    external_user = BooleanField('External_user', default=False)
     is_active = BooleanField('Active', default=False)
     is_admin = BooleanField('Admin', default=False)
     is_superuser = BooleanField('Superuser', default=False)
-    user_permissions = ManyToManyField(Permission, verbose_name='Разрешения', blank=True)
-    groups = ManyToManyField(Group, verbose_name='Группы', blank=True)
-    last_login = DateTimeField('Последняя активность', auto_now=True)
-    date_create = DateTimeField('Дата добавления', auto_now_add=True)
+    user_permissions = ManyToManyField(Permission, verbose_name='Permissions', blank=True)
+    groups = ManyToManyField(Group, verbose_name='Groups', blank=True)
+    last_login = DateTimeField('Last_active', auto_now=True)
+    date_create = DateTimeField('Date_of_creation', auto_now_add=True)
+
+    news_subscription = BooleanField(default=False)
 
     objects = CustomUserManager()
 
@@ -51,23 +53,23 @@ class UserModel(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name: str = 'пользователь'
-        verbose_name_plural: str = 'пользователи'
+        verbose_name: str = 'user'
+        verbose_name_plural: str = 'users'
 
     def __str__(self) -> str:
         return self.email
 
     def has_perm(self, perm, obj=None) -> bool:
-        """ Есть ли у пользователя конкретное разрешение? """
+        """ Does the user have specific permission? """
         return True
 
     def has_module_perms(self, app_label) -> bool:
-        """ Есть ли у пользователя права на просмотр приложения app_label? """
+        """ Does the user have permission to view the application app_label? """
         return True
 
     @property
     def is_staff(self) -> bool:
-        """ Сотрудник админ? """
+        """ Employee admin? """
         return self.is_admin
 
     def save(self, *args, **kwargs):
