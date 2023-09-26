@@ -194,6 +194,7 @@
             td, th{
                 border: 1px solid black;
                 height: 25px;
+                overflow: hidden;
 
                 .buttom_table{
                     width: 100%;
@@ -342,7 +343,7 @@
             }
 
             td:nth-child(1){
-                width: 115px;
+                width: 140px;
             }
 
             td:nth-child(4){
