@@ -1,9 +1,9 @@
 #!/bin/bash
 
-docker rm backend nginx frontend pg_admin
+docker stop buildx_buildkit_default
 
-docker rmi distribution_of_the_budgeting_system-backend
-docker rmi distribution_of_the_budgeting_system-nginx
-docker rmi distribution_of_the_budgeting_system-frontend
+docker rm buildx_buildkit_defaultn
 
-docker compose -f docker-compose.yml up
+docker rmi buildx-stable-1
+
+# docker compose -f docker-compose.production.yml up

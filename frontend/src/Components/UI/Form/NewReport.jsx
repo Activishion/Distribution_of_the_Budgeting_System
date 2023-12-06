@@ -7,12 +7,17 @@ import ButtonSubmitForm from "../Buttom/ButtonSubmitForm"
 import LabelForSelectIsNull from "../Container/LabelForSelectIsNull"
 import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
+import JournalService from '../../API/JournalAPI';
+import ResponseReportContainer from "../Container/ResponseReportContainer"
 
 
 const NewReport = ({ apiPort, apiHost }) => {
     const [report, setReport] = useState('')
     const [email, setEmail] = useState('')
     const [subscription, setSubscription] = useState('')
+    const [reportsList, setReportsList] = useState([])
+
+    const [responseServer, setResponseServer] = useState('')
 
     const [reportDirty, setReportDirty] = useState(false)
     const [emailDirty, setEmailDirty] = useState(false)
@@ -29,24 +34,30 @@ const NewReport = ({ apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/service/report`,
+            url: `http://${apiHost}:${apiPort}/api/v1/reports`,
             data: {
                 report: report,
-                user: email,
+                email: email,
                 subscription: subscription
             },
             headers: {'Content-Type': 'application/json'}
         })
         .then((response) => {
-            if (response.data['status'] === 201) {
-                setStatusSubmitForm(201)
+            if (response['status'] === 200) {
+                setStatusSubmitForm(200)
             }
+            setResponseServer(response['data'])
         }).catch((error) => {
             setStatusSubmitForm(404)
         })
         setReport('')
         setEmail('')
         setSubscription('')
+    }
+
+    async function GetListReports() {
+        const allReports = await JournalService.getListReports(apiPort, apiHost)
+        setReportsList(allReports)
     }
 
     const reportHandler = (e) => {
@@ -60,7 +71,7 @@ const NewReport = ({ apiPort, apiHost }) => {
 
     const emailHandler = (e) => {
         setEmail(e.target.value)
-        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
         if (!re.test(String(e.target.value).toLowerCase())) {
             setEmailError('Некорректный email')
         } else {
@@ -88,10 +99,14 @@ const NewReport = ({ apiPort, apiHost }) => {
             case 'subscription':
                 setSubscriptionDirty(true)
                 break
+            default:
+                console.log('error handler')
+                break
         }
     }
 
     useEffect(() => {
+        GetListReports()
         if (reportError || emailError || subscriptionError) {
             setFormValid(false)
         } else {
@@ -119,9 +134,9 @@ const NewReport = ({ apiPort, apiHost }) => {
                         placeholder=" "
                     >
                         <option value=''></option>
-                        <option value="Прибыли и убытки РТК">Прибыли и убытки РТК</option>
-                        <option value="РТК + Tele2">РТК + Tele2</option>
-                        <option value="Сегментная отчетность">Сегментная отчетность</option>
+                    {reportsList.map(report => (
+                        <option key={report.toString()} value={report}>{report}</option>
+                    ))}
                     </select>
                     <LabelForSelectIsNull
                         subscription={report}
@@ -177,6 +192,7 @@ const NewReport = ({ apiPort, apiHost }) => {
                 </div>
                 <ButtonSubmitForm valid={formValid} />
                 <PushReportContainer statusSubmit={statusSubmitForm} />
+                <ResponseReportContainer response={responseServer} />
             </div>
         </form>
     )

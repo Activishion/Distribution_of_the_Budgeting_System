@@ -43,7 +43,7 @@ const AppRouter = ({ apiPort, apiHost }) => {
                     apiHost={apiHost}
                 />
             } ></Route>
-            <Route exact path='/journal/:id' element={
+            <Route exact path='/journal/:email' element={
                 <JournalId
                     apiPort={apiPort}
                     apiHost={apiHost}

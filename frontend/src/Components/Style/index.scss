@@ -504,6 +504,7 @@
             place-items: center;
             display: flex;
             flex-direction: column;
+            margin-bottom: -20px;
 
             .heade_form{
                 font-size: 23px;
@@ -655,6 +656,13 @@
                 position: relative;
                 right: 215px;
             }
+        }
+
+        .push_report_container_response {
+            display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        color: green;
         }
     }
 

@@ -1,7 +1,7 @@
 const PushReportContainer = ({ statusSubmit }) => {
     return (
         <div className="push_report_container">
-            {statusSubmit === 201
+            {statusSubmit === 200   
                 ? <p className="good">Форма успешно отправлена</p>
                 : null
             }

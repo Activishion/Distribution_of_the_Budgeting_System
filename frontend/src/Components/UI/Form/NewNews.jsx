@@ -8,12 +8,15 @@ import LabelForSelectIsNull from "../Container/LabelForSelectIsNull"
 import LabelForSelectIsNotNull from "../Container/LabelForSelectIsNotNull"
 import OptionsForSelect from "../Container/OptionsForSelect"
 import ModalSubscription from "../ModalWindow/SubscriptionCheck"
+import ResponseReportContainer from "../Container/ResponseReportContainer"
 
 
 const NewNews = ({ apiPort, apiHost }) => {
     const [emailNews, setEmailNews] = useState('')
     const [subscriptionNews, setSubscriptionNews] = useState('')
     const [fullName, setFullName] = useState('')
+
+    const [responseServer, setResponseServer] = useState('')
 
     const [emailDirtyNews, setEmailDirtyNews] = useState(false)
     const [subscriptionDirtyNews, setSubscriptionDirtyNews] = useState(false)
@@ -32,18 +35,19 @@ const NewNews = ({ apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/service/news`,
+            url: `http://${apiHost}:${apiPort}/api/v1/news`,
             data: {
-                user: emailNews,
-                subscription: subscriptionNews,
-                full_name: fullName
+                author: fullName,
+                email: emailNews,
+                subscription: subscriptionNews
             },
             headers: {'Content-Type': 'application/json'}
         })
         .then((response) => {
-            if (response.data['status'] === 201) {
-                setStatusSubmitFormNews(201)
+            if (response['status'] === 200) {
+                setStatusSubmitFormNews(200)
             }
+            setResponseServer(response['data'])
         }).catch((error) => {
             setStatusSubmitFormNews(404)
         })
@@ -54,7 +58,7 @@ const NewNews = ({ apiPort, apiHost }) => {
 
     const emailHandlerNews = (e) => {
         setEmailNews(e.target.value)
-        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
         if (!re.test(String(e.target.value).toLowerCase())) {
             setEmailErrorNews('Некорректный email')
         } else {
@@ -90,6 +94,9 @@ const NewNews = ({ apiPort, apiHost }) => {
                 break
             case 'fullName':
                 setFullNameDirtyNews(true)
+                break
+            default:
+                console.log('error handler')
                 break
         }
     }
@@ -173,12 +180,14 @@ const NewNews = ({ apiPort, apiHost }) => {
                         />
                     </div>
                     
-                        <ButtonSubmitForm valid={formValidNews} />
+                    <ButtonSubmitForm valid={formValidNews} />
                     
                     <PushReportContainer statusSubmit={statusSubmitFormNews} />
+                    <ResponseReportContainer response={responseServer} />
                 </div>
+                
             </form>
-            {statusSubmitFormNews == '' ?
+            {statusSubmitFormNews === '' ?
                 <div className="noForm">
                     <ModalSubscription
                         active={modalWindowActive}

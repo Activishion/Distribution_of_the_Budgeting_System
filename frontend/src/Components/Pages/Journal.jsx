@@ -17,10 +17,9 @@ const Journal = ({ apiPort, apiHost }) => {
     
     async function GetJournals() {
         const allJournal = await JournalService.getAllJournals(limit, page, apiPort, apiHost)
-        const totalCount = allJournal.count
-        setJournal(allJournal.results.reports)
-        if (totalCount > 20) {
-            setTotalPages(PaginationService.getPageCount(totalCount, limit))
+        setJournal(allJournal.items)
+        if (journal.total > 20) {
+            setTotalPages(PaginationService.getPageCount(journal.total, limit))
         }
     }
 
@@ -44,33 +43,23 @@ const Journal = ({ apiPort, apiHost }) => {
                             <th>Дата</th>
                             <th>Изменение</th>
                             <th>Статус</th>
-                            <th>Отчет</th>
                             <th>Email</th>
+                            <th>Пользователь</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {journal.map(record => (
                             <tr key={record.id}>
-                                <td>{record.data}</td>
-                                <td>
-                                    {record?.subscription
-                                        ? 'Включение'
-                                        : 'Исключение'
-                                    }
-                                </td>
-                                <td>
-                                    {record?.user?.moderator_is_decision
-                                        ? 'Согласовано'
-                                        : 'Ожидает'
-                                    }
-                                </td>
-                                <td>{record.report}</td>
-                                <td>{record.user}</td>
+                                <td>{record.date}</td>
+                                <td>{record.op}</td>
+                                <td>{record.state}</td>
+                                <td>{record.email}</td>
+                                <td>{record.user_name}</td>
                                 <td className="last_td">
                                     <button 
                                         className="buttom_table"
-                                        onClick={() => nav(`/journal/${record.id}`)}
+                                        onClick={() => nav(`/journal/${record.email}`)}
                                     >
                                         Подробнее
                                     </button>

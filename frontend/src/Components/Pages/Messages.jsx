@@ -9,17 +9,16 @@ const Messages = ({ apiPort, apiHost }) => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
     const [totalPages, setTotalPages] = useState(0)
-    const [limit, ] = useState(10)
+    const [limit, ] = useState(20)
     const [page, setPage] = useState(1)
 
     let pagesArray = PaginationService.getPagesArray(totalPages)
 
     async function GetMessages() {
         const allMessages = await MessageService.getAllMessages(limit, page, apiPort, apiHost)
-        const totalCount = allMessages.count
-        setMessages(allMessages.results.message)
-        if (totalCount > 10) {
-            setTotalPages(PaginationService.getPageCount(totalCount, limit))
+        setMessages(allMessages.items)
+        if (messages.total > 20) {
+            setTotalPages(PaginationService.getPageCount(messages.total, limit))
         }
     }
 
@@ -50,11 +49,11 @@ const Messages = ({ apiPort, apiHost }) => {
                     <tbody>
                         {messages.map(message => 
                             <tr key={message.id}>
-                                <td>{message.date}</td>
-                                <td>{message.PAO ? 'Да' : 'Нет'}</td>
-                                <td>{message.DZO ? 'Да' : 'Нет'}</td>
+                                <td>{message.send_date}</td>
+                                <td>{message.internal_users ? 'Да' : 'Нет'}</td>
+                                <td>{message.external_users ? 'Да' : 'Нет'}</td>
                                 <td>{message.subject}</td>
-                                <td>{message.message}</td>
+                                <td>{message.plain_body}</td>
                                 <td>{message.author}</td>
                                 <td className="last_td">
                                     <button

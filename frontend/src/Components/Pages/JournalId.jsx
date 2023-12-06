@@ -8,16 +8,16 @@ import RecordHeader from '../UI/Container/RecordHeader'
 
 const JournalPage = ({ apiPort, apiHost }) => {
     const nav = useNavigate()
-    const { id } = useParams()
+    const { email } = useParams()
     const [journalId, setJournalId] = useState([])
 
-    async function GetJournalById(id) {
-        const journalById = await JournalService.getJournalById(id, apiPort, apiHost)
-        setJournalId(journalById.report)
+    async function getJournalByEmail(email) {
+        const journalById = await JournalService.getJournalByEmail(email, apiPort, apiHost)
+        setJournalId(journalById)
     }
 
     useEffect(() => {
-        GetJournalById(id)
+        getJournalByEmail(email)
     }, [])
 
     return(
@@ -26,15 +26,15 @@ const JournalPage = ({ apiPort, apiHost }) => {
                 <div className="header_container_left">
                     <RecordDiv 
                         header='Email: '
-                        text={journalId?.user}
+                        text={journalId?.email}
                     />
                     <RecordDiv 
                         header='Имя пользователя: '
-                        text={journalId?.full_name}
+                        text={journalId?.user_name}
                     />
                     <RecordDiv 
                         header='Внешний пользователь: '
-                        text={journalId?.external ? 'Да' : 'Нет'}
+                        text={journalId?.external_flg ? 'Да' : 'Нет'}
                     />
                 </div>
                 <div className="header_container_right">
@@ -42,11 +42,11 @@ const JournalPage = ({ apiPort, apiHost }) => {
                         <RecordHeader text='Создание' />
                         <RecordDiv 
                             header='Дата создания:'
-                            text={journalId.data}
+                            text={journalId.date_added}
                         />
                         <RecordDiv 
                             header='Добавлено через портал:'
-                            text={journalId?.added_via_portal ? 'Да' : 'Нет'}
+                            text={journalId?.self_add ? 'Да' : 'Нет'}
                         />
                     </div>
                     <div className="container_create">
@@ -54,48 +54,48 @@ const JournalPage = ({ apiPort, apiHost }) => {
                         <RecordDiv 
                             header='Решение модератора: '
                             text={
-                                journalId?.moderator_is_decision
+                                journalId?.moderator_acc
                                 ? 'Согласовано'
                                 : 'Не согласовано'}
                         />
-                        {journalId?.moderator
+                        {journalId?.moderator_name
                             ?<RecordDiv 
                                 header='Модератор: '
-                                text={journalId?.moderator}
+                                text={journalId?.moderator_name}
                             />
                             :<></>
                         }
-                        {journalId?.data_moderation
+                        {journalId?.acc_date
                             ?<RecordDiv 
                                 header='Дата согласования: '
-                                text={journalId?.data_moderation}
+                                text={journalId?.acc_date}
                             />
                             :<></>
                         }
-                        {journalId?.comment
+                        {journalId?.moderator_comm
                             ?<RecordDiv 
                                 header='Комменарий: '
-                                text={journalId?.comment}
+                                text={journalId?.moderator_comm}
                             />
                             :<></>
                         }
                     </div>
                     
                         <div className="container_create">
-                            {journalId?.date_delete
+                            {journalId?.date_deleted
                                 ?<div>
                                     <RecordHeader text='Удаление' />
                                     <RecordDiv 
                                         header='Дата удаления: '
-                                        text={journalId.date_delete}
+                                        text={journalId.date_deleted}
                                     />
                                 </div>
                                 :<></>
                             }
-                            {journalId?.comment_delete
+                            {journalId?.moderator_comm_del
                                 ?<RecordDiv 
                                     header='Комменарий: '
-                                    text={journalId?.comment_delete}
+                                    text={journalId?.moderator_comm_del}
                                 />
                                 :<></>
                             }

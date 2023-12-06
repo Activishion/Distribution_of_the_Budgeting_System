@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const ModalSubscription = ({ active, setActive, apiPort, apiHost }) => {
     const [emailModal, setEmailModal] = useState('')
-    const [emailErrorModal, setEmailErrorModal] = useState('Некорректный email')
+    const [, setEmailErrorModal] = useState('Некорректный email')
     const [statusSubmitFormModal, setStatusSubmitFormModal] = useState('')
 
     const [responses, setResponses] = useState('')
@@ -13,7 +13,7 @@ const ModalSubscription = ({ active, setActive, apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/account`,
+            url: `http://${apiHost}:${apiPort}/api/v1/check_subscription`,
             data: {
                 email: emailModal,
             },
@@ -30,7 +30,7 @@ const ModalSubscription = ({ active, setActive, apiPort, apiHost }) => {
         })
         setEmailModal('')
     }
-
+    
     const emailHandlerModalWindow = (e) => {
         setEmailModal(e.target.value)
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;

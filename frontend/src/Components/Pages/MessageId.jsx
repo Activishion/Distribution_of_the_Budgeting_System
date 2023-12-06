@@ -12,7 +12,7 @@ const MessagePage = ({ apiPort, apiHost }) => {
 
     async function GetMessageById(id) {
         const messageById = await MessageService.getMessageById(id, apiPort, apiHost)
-        setMessageId(messageById.message)
+        setMessageId(messageById)
     }
 
     useEffect(() => {
@@ -22,11 +22,11 @@ const MessagePage = ({ apiPort, apiHost }) => {
     return (
         <div className="messageId">
             <div className="message_header">
-                <p className="message_header_text">Сообщение #{messageId.id}</p>
+                <p className="message_header_text"><b>Сообщение</b></p>
                 <div className="paodzo_flex">
                     <MessageText
                         header='Отправлено: '
-                        text={messageId.date}
+                        text={messageId.send_date}
                     />
                 </div>
             </div>
@@ -34,13 +34,13 @@ const MessagePage = ({ apiPort, apiHost }) => {
                 <div className="paodzo_flex">
                     <MessageText
                         header='ПАО: '
-                        text={messageId.PAO ? 'Да' : 'Нет'}
+                        text={messageId.internal_users ? 'Да' : 'Нет'}
                     />
                 </div>
                 <div className="paodzo_flex">
                     <MessageText
                         header='ДЗО: '
-                        text={messageId.DZO ? 'Да' : 'Нет'}
+                        text={messageId.external_users ? 'Да' : 'Нет'}
                     />
                 </div>
             </div>
@@ -48,20 +48,20 @@ const MessagePage = ({ apiPort, apiHost }) => {
             <div className="main">
                 <p className="main_h">{messageId.subject}</p>
                 <p className="main_text">
-                    {messageId.message}
+                    {messageId.plain_body}
                 </p>
             </div>
             
             <div className="author">
                 <MessageText
                     header='Автор: '
-                    text={messageId?.full_name}
+                    text={messageId?.author}
                 />
             </div>
             <div className="bottom_container">
                 <button
                     className="message_button"
-                    onClick={() => nav(`/messages`)}
+                    onClick={() => nav(`/messages/`)}
                 >
                     Назад
                 </button>
