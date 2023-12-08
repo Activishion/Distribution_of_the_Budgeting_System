@@ -1,12 +1,14 @@
 from starlette.config import Config
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 
 
 config = Config('../.env')
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
 
 
 class Settings:
@@ -23,6 +25,7 @@ class Settings:
     POSTGRES_PASSWORD: str = config('POSTGRES_PASSWORD')
     POSTGRES_HOST: str = config('POSTGRES_HOST')
     POSTGRES_PORT: str = config('POSTGRES_PORT')
+    MODE: str = config('MODE')
 
     """ Deploy """
     PORT: str = config('PORT')

@@ -7,3 +7,6 @@ docker rm buildx_buildkit_defaultn
 docker rmi buildx-stable-1
 
 # docker compose -f docker-compose.production.yml up
+
+# DOCKER_BUILDKIT=0 docker-compose -f docker-compose.production.yml up --build -d
+# создание связки образов докер-компоуз

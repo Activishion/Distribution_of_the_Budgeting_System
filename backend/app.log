@@ -115,3 +115,12 @@
 2023-12-01 19:18:01,373 - app:35 - ERROR - User with email='alex_khadsidukov@mail.ru' not found. IP = 127.0.0.1
 2023-12-06 20:46:29,832 - app:93 - INFO - Loaded reports.
 2023-12-06 20:46:36,869 - app:117 - INFO - Loaded messages.
+2023-12-06 22:06:18,130 - app:93 - INFO - Loaded reports.
+2023-12-07 20:26:09,317 - app:93 - INFO - Loaded reports.
+2023-12-07 20:26:16,962 - app:93 - INFO - Loaded reports.
+2023-12-07 20:26:18,131 - app:93 - INFO - Loaded reports.
+2023-12-07 20:27:25,557 - app:93 - INFO - Loaded reports.
+2023-12-07 21:01:08,415 - app:47 - ERROR - Error loading list of reports. IP = 127.0.0.1
+2023-12-07 22:42:52,720 - app:93 - INFO - Loaded reports.
+2023-12-07 22:43:31,067 - app:93 - INFO - Loaded reports.
+2023-12-07 22:43:36,693 - app:117 - INFO - Loaded messages.

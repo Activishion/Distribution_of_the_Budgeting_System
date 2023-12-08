@@ -56,7 +56,6 @@ class MessageService:
     ):
         async with cmd:
             report_dict_on_news = report_on_new.model_dump()
-            print(report_dict_on_news)
 
             if report_dict_on_news['subscription'] == 'Подписаться':
                 news_subscription = await cmd.report.return_add_state_through_procedures(
@@ -148,7 +147,6 @@ class ReportService:
                 response_dict["id"] = random.randint(1, 1000000000000)
                 response_list.append(response_dict)
             
-
             return [ReadReports30Day.model_validate(response).dict() for response in response_list]
         
     async def get_list_reports_for_subscription(self, cmd: InterfaseContextManager):

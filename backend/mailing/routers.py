@@ -7,7 +7,7 @@ from config.dependencies import ContextManagerDepends
 from .service import MessageService, ReportService
 from .schemas import (ReadReport, CreateSubscriptionNewReport, CheckSubscription,
                       ReadMessage, CreateSubscriptionOnMessages, ReadReports30Day)
-import os
+
 
 router = APIRouter()
 logger = logging.getLogger('app')
