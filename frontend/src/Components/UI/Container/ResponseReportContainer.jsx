@@ -1,7 +1,7 @@
 const ResponseReportContainer = ({ response }) => {
     return (
         <div className="push_report_container_response">
-            {response != '' 
+            {response !== '' 
                 ? <p className="good">{response}</p>
                 : <></>
             }

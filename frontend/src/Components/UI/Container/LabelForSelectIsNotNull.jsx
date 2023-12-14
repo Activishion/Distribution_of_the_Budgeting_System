@@ -1,7 +1,7 @@
 const LabelForSelectIsNotNull = ({ subscription, text  }) => {
     return (
         <>
-            {subscription != ''
+            {subscription !== ''
                 ? <label id='labelNotNull' htmlFor='reportNews'>{text}</label>
                 : null
             }

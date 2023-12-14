@@ -26,15 +26,20 @@ def create_app() -> FastAPI:
         redoc_url = None
     )
 
-    origins_host: list = [
-        'http://localhost:3000',
-        'http://localhost:8000'
+    allow_methods: list = ['OPTIONS', 'HEAD', 'GET', 'POST']
+
+    allow_headers=[
+        'Content-Type',
+        'Set-Cookie',
+        'Access-Control-Allow-Headers',
+        'Access-Control-Allow-Credentials',
+        'Access-Control-Allow-Origin'
     ]
 
     add_pagination(app)
-    init_logger('app')
+    init_logger('mailing.router')
     init_routers(app)
-    init_middleware(app, origins_host)
+    init_middleware(app, allow_methods, allow_headers)
     return app
 
 
@@ -42,19 +47,17 @@ def init_routers(app: FastAPI) -> None:
     app.include_router(router, prefix="/api/v1")
 
 
-def init_middleware(app: FastAPI, origins_host: list) -> None:
+def init_middleware(
+    app: FastAPI,
+    allow_methods: list,
+    allow_headers: list
+) -> None:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins_host,
+        allow_origins=["*"],
         allow_credentials=False,
-        allow_methods=['OPTIONS', 'HEAD', 'GET', 'POST'],
-        allow_headers=[
-            'Content-Type',
-            'Set-Cookie',
-            'Access-Control-Allow-Headers',
-            'Access-Control-Allow-Credentials',
-            'Access-Control-Allow-Origin'
-        ]
+        allow_methods=allow_methods,
+        allow_headers=allow_headers
     )
 
 

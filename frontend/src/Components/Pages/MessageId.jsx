@@ -17,7 +17,7 @@ const MessagePage = ({ apiPort, apiHost }) => {
 
     useEffect(() => {
         GetMessageById(id)
-    }, [])
+    }, [id])
 
     return (
         <div className="messageId">

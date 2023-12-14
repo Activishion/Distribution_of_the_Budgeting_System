@@ -18,7 +18,7 @@ const JournalPage = ({ apiPort, apiHost }) => {
 
     useEffect(() => {
         getJournalByEmail(email)
-    }, [])
+    }, [email])
 
     return(
         <div className="journalId">
