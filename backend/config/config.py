@@ -18,6 +18,8 @@ class Settings:
 
     DEBUG: bool = config('DEBUG')
     SECRET_KEY: str = config('SECRET_KEY')
+    LOG_FORMAT: str = '%(asctime)s - [%(levelname)s] - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s'
+    LOG_DATE_FORMAT: str = "%m/%d/%Y %H:%M:%S"
 
     """ DB """
     POSTGRES_NAME: str = config('POSTGRES_NAME')

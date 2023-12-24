@@ -1,4 +1,3 @@
-import logging
 import uvicorn
 
 from fastapi import FastAPI
@@ -26,9 +25,18 @@ def create_app() -> FastAPI:
         redoc_url = None
     )
 
+    allow_origins: list = [
+        'http://0.0.0.0:8000',
+        'http://0.0.0.0:3000',
+        'http://localhost:3000',
+        'http://localhost:8000',
+        'http://10.28.110.110:8000',
+        'https://10.28.110.110:8000'
+    ]
+
     allow_methods: list = ['OPTIONS', 'HEAD', 'GET', 'POST']
 
-    allow_headers=[
+    allow_headers: list = [
         'Content-Type',
         'Set-Cookie',
         'Access-Control-Allow-Headers',
@@ -37,9 +45,8 @@ def create_app() -> FastAPI:
     ]
 
     add_pagination(app)
-    init_logger('mailing.router')
     init_routers(app)
-    init_middleware(app, allow_methods, allow_headers)
+    init_middleware(app, allow_origins, allow_methods, allow_headers)
     return app
 
 
@@ -49,44 +56,17 @@ def init_routers(app: FastAPI) -> None:
 
 def init_middleware(
     app: FastAPI,
+    allow_origins: list,
     allow_methods: list,
     allow_headers: list
 ) -> None:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=allow_origins,
         allow_credentials=False,
         allow_methods=allow_methods,
         allow_headers=allow_headers
     )
-
-
-# Logging
-def init_logger(name):
-    logger = logging.getLogger(name)
-    FORMAT = '%(asctime)s - %(name)s:%(lineno)s - %(levelname)s - %(message)s'
-    logger.setLevel(logging.INFO)
-
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter(FORMAT))
-    sh.setLevel(logging.ERROR)
-    sh.addFilter(logger_filter)
-
-    fh = logging.FileHandler(
-        filename='app.log'
-    )
-    fh.setFormatter(logging.Formatter(FORMAT))
-    fh.setLevel(logging.INFO)
-    fh.addFilter(logger_filter)
-
-    logger.addHandler(sh)
-    logger.addHandler(fh)
-
-
-def logger_filter(log: logging.LogRecord) -> int:
-    if 'password' in str(log.msg):
-        return 0
-    return 1
 
 
 if __name__ == '__main__':

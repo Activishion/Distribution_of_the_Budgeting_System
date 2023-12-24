@@ -62,12 +62,21 @@ class MessageService:
                     report_dict_on_news['email'],
                     report_dict_on_news['author']
                 )
+                if news_subscription is None:
+                    await cmd.rollback()
+                    return None
+
                 await cmd.commit()
                 return news_subscription
             elif report_dict_on_news['subscription'] == 'Отписаться':
                 unsubscribe_from_news = await cmd.report.return_delete_state_through_procedures(
                     report_dict_on_news['email']
                 )
+
+                if unsubscribe_from_news is None:
+                    await cmd.rollback()
+                    return None
+
                 await cmd.commit()
                 return unsubscribe_from_news
 
@@ -85,10 +94,20 @@ class ReportService:
 
             if subscription_dict['subscription'] == 'Подписаться':
                 response_add = await cmd.report.add_one_user_through_procedures(subscription_dict['email'], report_id)
+
+                if response_add is None:
+                    await cmd.rollback()
+                    return None
+
                 await cmd.commit()
                 return response_add
             elif subscription_dict['subscription'] == 'Отписаться':
                 response_delete = await cmd.report.delete_user_through_procedures(subscription_dict['email'], report_id)
+
+                if response_delete is None:
+                    await cmd.rollback()
+                    return None
+
                 await cmd.commit()
                 return response_delete
 
@@ -135,8 +154,8 @@ class ReportService:
     async def get_all_reports(self, cmd: InterfaseContextManager):
         async with cmd:
             response_alchemy = await cmd.report.subscription_in_30_days()
-            
-            if len(response_alchemy) == 0:
+
+            if response_alchemy is None:
                 return None
 
             response_list: list = []
@@ -153,7 +172,7 @@ class ReportService:
         async with cmd:
             response_alchemy = await cmd.report.get_list_reports()
 
-            if len(response_alchemy) == 0:
+            if response_alchemy is None:
                 return None
             
             return list(response_alchemy.values())

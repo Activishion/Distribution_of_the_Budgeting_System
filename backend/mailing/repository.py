@@ -2,8 +2,9 @@ from abc import  abstractmethod, ABC
 
 from sqlalchemy import text
 
+from config.logging import error_log
 from config.repository import SQLAlchemyRepository
-from .models import Reporting, Message
+from mailing.models import Reporting, Message
 
 
 class MessageRepository(SQLAlchemyRepository, ABC):
@@ -52,8 +53,12 @@ class ReportingRepository(AbstractReportRepository):
         stmt = (
             f"call bi.np_add_new_user_web({email}::varchar, {report_id}::varchar, ''::varchar, 0::int2)"
         )
-        result = await self.session.execute(stmt)
-        return result.scalar_one()
+        try:
+            result = await self.session.execute(stmt)
+            return result.scalar_one()
+        except:
+            error_log.error('Procedure call error: bi.np_add_new_user_web.')
+            return None
     
     async def delete_user_through_procedures(self, email: str, report_id: str):
         """
@@ -64,8 +69,12 @@ class ReportingRepository(AbstractReportRepository):
         stmt = (
             f"call bi.np_delete_new_user_web({email}::varchar, {report_id}::varchar, ''::varchar, 0::int2)"
         )
-        result = await self.session.execute(stmt)
-        return result.scalar_one()
+        try:
+            result = await self.session.execute(stmt)
+            return result.scalar_one()
+        except:
+            error_log.error('Procedure call error: bi.np_delete_new_user_web.')
+            return None
     
     async def return_delete_state_through_procedures(self, email: str):
         """
@@ -75,8 +84,12 @@ class ReportingRepository(AbstractReportRepository):
         stmt = (
             f"call huml.delete_user({email}, 'Портал', 'Удален по собственному желанию', true, ''::varchar, 0::int2)"
         )
-        result = await self.session.execute(stmt)
-        return result.scalar_one()
+        try:
+            result = await self.session.execute(stmt)
+            return result.scalar_one()
+        except:
+            error_log.error('Procedure call error: huml.delete_user.')
+            return None
     
     async def return_add_state_through_procedures(self, email: str, user_name: str):
         """
@@ -87,9 +100,13 @@ class ReportingRepository(AbstractReportRepository):
         stmt = (
             f"call huml.add_user({email}, {user_name}, true, ''::varchar, 0::int2)"
         )
-        result = await self.session.execute(stmt)
-        return result.scalar_one()
-    
+        try:
+            result = await self.session.execute(stmt)
+            return result.scalar_one()
+        except:
+            error_log.error('Procedure call error: huml.add_user.')
+            return None
+
     async def subscription_in_30_days(self):
         query = (text(
             "SELECT date_T, to_char(date_t, 'DD.MM.YY HH24:MI') date_t2, op, LEFT(email, 32) email, LEFT(user_name, 33) user_name, stat " 
@@ -104,9 +121,13 @@ class ReportingRepository(AbstractReportRepository):
                 "FROM huml.mailing_list WHERE date_deleted between now()-interval '30 days' AND now() "
             ") a ORDER BY 1 desc"
         ))
-        result = await self.session.execute(query)
-        return result.fetchall()
-    
+        try:
+            result = await self.session.execute(query)
+            return result.fetchall()
+        except:
+            error_log.error('Error requesting subscription history.')
+            return None
+
     async def get_list_reports(self):
         query = (text(
             "SELECT Report_ID, Report_Name "
@@ -114,8 +135,12 @@ class ReportingRepository(AbstractReportRepository):
             "WHERE Is_Public "
             "ORDER BY 2"
         ))
-        result = await self.session.execute(query)
-        return dict(result.fetchall())
+        try:
+            result = await self.session.execute(query)
+            return dict(result.fetchall())
+        except:
+            error_log.error('Error in request to get list of reports.')
+            return None
     
     async def get_report_by_report_name(self, report_id: str):
         query = (text(
@@ -123,6 +148,9 @@ class ReportingRepository(AbstractReportRepository):
             "FROM bi.NP_Reports "
            f"WHERE Report_Name = '{report_id}';"
         ))
-        result = await self.session.execute(query)
-        result = result.scalar_one_or_none()
-        return result
+        try:
+            result = await self.session.execute(query)
+            return result.scalar_one_or_none()
+        except:
+            error_log.error('Receive report request failed.')
+            return None
