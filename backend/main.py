@@ -28,10 +28,19 @@ def create_app() -> FastAPI:
     allow_origins: list = [
         'http://0.0.0.0:8000',
         'http://0.0.0.0:3000',
+        'http://0.0.0.0:8888',
+        'http://0.0.0.0:8080',
         'http://localhost:3000',
         'http://localhost:8000',
         'http://10.28.110.110:8000',
-        'https://10.28.110.110:8000'
+        'https://10.28.110.110:8000',
+        'http://10.28.110.110:8080',
+        'https://10.28.110.110:8080',
+        'http://10.28.110.110:8888',
+        'https://10.28.110.110:8888',
+        'https://10.28.110.110:5432',
+        'http://10.28.110.110:5432',
+        'http://test.mailing.rt.ru'
     ]
 
     allow_methods: list = ['OPTIONS', 'HEAD', 'GET', 'POST']

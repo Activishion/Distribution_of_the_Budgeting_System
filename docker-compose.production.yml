@@ -11,6 +11,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.backend
     env_file: .env
+    network_mode: "host"
     restart: always
     volumes:
       - static_volume:/backend_static
@@ -22,6 +23,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.frontend
     command: cp -r /app/build/. /frontend_static/
+    network_mode: "host"
     volumes:
       - static_volume:/frontend_static
 
@@ -34,7 +36,6 @@ services:
     volumes:
       - static_volume:/staticfiles/
       - media:/media
-    ports:
-      - ${NGINX_PORT}:80
-    restart: always 
+    restart: always
+    network_mode: "host"
   
