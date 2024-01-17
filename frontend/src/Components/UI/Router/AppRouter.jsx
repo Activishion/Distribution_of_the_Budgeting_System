@@ -10,44 +10,26 @@ import JournalId from "../../Pages/JournalId"
 import Error from "../../Pages/Error"
 
 
-const AppRouter = ({ apiPort, apiHost }) => {
+const AppRouter = () => {
     return(
         <Routes>
             <Route path='/' element={
-                <Subscriptions
-                    apiPort={apiPort}
-                    apiHost={apiHost} 
-                />
+                <Subscriptions />
             }></Route>
             <Route path='/reporting' element={
-                <Reporting
-                    apiPort={apiPort}
-                    apiHost={apiHost}
-                />
+                <Reporting />
             }></Route>
             <Route exact path='/messages' element={
-                <Messages
-                    apiPort={apiPort}
-                    apiHost={apiHost}
-                />
+                <Messages />
             } ></Route>
             <Route exact path='/messages/:id' element={
-                <MessageId
-                    apiPort={apiPort}
-                    apiHost={apiHost}
-                />
+                <MessageId />
             } ></Route>
             <Route exact path='/journal' element={
-                <Journal
-                    apiPort={apiPort}
-                    apiHost={apiHost}
-                />
+                <Journal />
             } ></Route>
             <Route exact path='/journal/:email' element={
-                <JournalId
-                    apiPort={apiPort}
-                    apiHost={apiHost}
-                />
+                <JournalId />
             } ></Route>
             <Route path='/info' element={<Main />} ></Route>
             <Route path="*" element={<Error />}></Route>

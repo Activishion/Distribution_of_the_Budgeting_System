@@ -11,7 +11,7 @@ import ModalSubscription from "../ModalWindow/SubscriptionCheck"
 import ResponseReportContainer from "../Container/ResponseReportContainer"
 
 
-const NewNews = ({ apiPort, apiHost }) => {
+const NewNews = () => {
     const [emailNews, setEmailNews] = useState('')
     const [subscriptionNews, setSubscriptionNews] = useState('')
     const [fullName, setFullName] = useState('')
@@ -35,7 +35,7 @@ const NewNews = ({ apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/news`,
+            url: `http://127.0.0.1:8000/api/v1/news`,
             data: {
                 author: fullName,
                 email: emailNews,
@@ -192,8 +192,6 @@ const NewNews = ({ apiPort, apiHost }) => {
                     <ModalSubscription
                         active={modalWindowActive}
                         setActive={setModalWindowActive}
-                        apiPort={apiPort}
-                        apiHost={apiHost}
                     />
                     <div className="buttonGroup">
                         <div className="modalWindow">

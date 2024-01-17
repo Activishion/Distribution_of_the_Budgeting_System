@@ -5,7 +5,7 @@ import MessageService from '../API/MessageAPI'
 import PaginationService from '../UI/Pagination/Pages'
 
 
-const Messages = ({ apiPort, apiHost }) => {
+const Messages = () => {
     const nav = useNavigate()
     const [messages, setMessages] = useState([])
     const [totalPages, setTotalPages] = useState(0)
@@ -15,7 +15,7 @@ const Messages = ({ apiPort, apiHost }) => {
     let pagesArray = PaginationService.getPagesArray(totalPages)
 
     async function GetMessages() {
-        const allMessages = await MessageService.getAllMessages(limit, page, apiPort, apiHost)
+        const allMessages = await MessageService.getAllMessages(limit, page)
         setMessages(allMessages.items)
         if (messages.total > 20) {
             setTotalPages(PaginationService.getPageCount(messages.total, limit))

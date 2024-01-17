@@ -11,7 +11,7 @@ import JournalService from '../../API/JournalAPI';
 import ResponseReportContainer from "../Container/ResponseReportContainer"
 
 
-const NewReport = ({ apiPort, apiHost }) => {
+const NewReport = () => {
     const [report, setReport] = useState('')
     const [email, setEmail] = useState('')
     const [subscription, setSubscription] = useState('')
@@ -34,7 +34,7 @@ const NewReport = ({ apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/reports`,
+            url: `http://127.0.0.1:8000/api/v1/reports`,
             data: {
                 report: report,
                 email: email,
@@ -56,7 +56,7 @@ const NewReport = ({ apiPort, apiHost }) => {
     }
 
     async function GetListReports() {
-        const allReports = await JournalService.getListReports(apiPort, apiHost)
+        const allReports = await JournalService.getListReports()
         setReportsList(allReports)
     }
 

@@ -26,21 +26,16 @@ def create_app() -> FastAPI:
     )
 
     allow_origins: list = [
-        'http://0.0.0.0:8000',
-        'http://0.0.0.0:3000',
-        'http://0.0.0.0:8888',
+        'http://0.0.0.0:3000'
         'http://0.0.0.0:8080',
-        'http://localhost:3000',
-        'http://localhost:8000',
-        'http://10.28.110.110:8000',
-        'https://10.28.110.110:8000',
+        'http://0.0.0.0:8888',
         'http://10.28.110.110:8080',
         'https://10.28.110.110:8080',
         'http://10.28.110.110:8888',
         'https://10.28.110.110:8888',
-        'https://10.28.110.110:5432',
-        'http://10.28.110.110:5432',
-        'http://test.mailing.rt.ru'
+        'http://test.mailingbs.rt.ru',
+        'http://mailingbs.rt.ru',
+        'https://mailingbs.rt.ru',
     ]
 
     allow_methods: list = ['OPTIONS', 'HEAD', 'GET', 'POST']
@@ -50,7 +45,7 @@ def create_app() -> FastAPI:
         'Set-Cookie',
         'Access-Control-Allow-Headers',
         'Access-Control-Allow-Credentials',
-        'Access-Control-Allow-Origin'
+        'Access-Control-Allow-Origin',  
     ]
 
     add_pagination(app)
@@ -67,12 +62,13 @@ def init_middleware(
     app: FastAPI,
     allow_origins: list,
     allow_methods: list,
-    allow_headers: list
+    allow_headers: list,
 ) -> None:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=allow_origins,
         allow_credentials=False,
+        allow_origin_regex=None,
         allow_methods=allow_methods,
         allow_headers=allow_headers
     )
@@ -83,5 +79,6 @@ if __name__ == '__main__':
         'main:create_app',
         port = 8000,
         host = settings.HOST,
-        reload = settings.RELOAD
+        reload = settings.RELOAD,
+        factory=True
     )

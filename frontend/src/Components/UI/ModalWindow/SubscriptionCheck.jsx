@@ -2,7 +2,7 @@ import { useState } from "react"
 import axios from 'axios'
 
 
-const ModalSubscription = ({ active, setActive, apiPort, apiHost }) => {
+const ModalSubscription = ({ active, setActive }) => {
     const [emailModal, setEmailModal] = useState('')
     const [, setEmailErrorModal] = useState('Некорректный email')
     const [statusSubmitFormModal, setStatusSubmitFormModal] = useState('')
@@ -13,7 +13,7 @@ const ModalSubscription = ({ active, setActive, apiPort, apiHost }) => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://${apiHost}:${apiPort}/api/v1/check_subscription`,
+            url: `http://127.0.0.1:8000/api/v1/check_subscription`,
             data: {
                 email: emailModal,
             },

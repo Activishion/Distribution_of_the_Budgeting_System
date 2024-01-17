@@ -6,13 +6,13 @@ import RecordDiv from '../UI/Container/RecordDiv'
 import RecordHeader from '../UI/Container/RecordHeader'
 
 
-const JournalPage = ({ apiPort, apiHost }) => {
+const JournalPage = () => {
     const nav = useNavigate()
     const { email } = useParams()
     const [journalId, setJournalId] = useState([])
 
     async function getJournalByEmail(email) {
-        const journalById = await JournalService.getJournalByEmail(email, apiPort, apiHost)
+        const journalById = await JournalService.getJournalByEmail(email)
         setJournalId(journalById)
     }
 
