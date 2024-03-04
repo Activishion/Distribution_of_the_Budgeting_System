@@ -35,7 +35,7 @@ const NewNews = () => {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: `http://127.0.0.1:8000/api/v1/news`,
+            url: `http://0.0.0.0:8000/api/v1/news`,
             data: {
                 author: fullName,
                 email: emailNews,

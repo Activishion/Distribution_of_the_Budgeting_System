@@ -14,17 +14,15 @@ const Main = () => {
                 </p>
                 <p className="main_text">
                     Подробно ознакомиться с типовым содержимым отчетов можно на  
-                    <a 
-                        href="https://openconf.rt.ru/pages/viewpage.action?pageId=4591121"
-                    >
+                    <a href="https://openconf.rt.ru/pages/viewpage.action?pageId=4591121">
                         Справочном портале
                     </a>.
                 </p>
                 <div className="main_text_container">
                     <FooterContainer
                         position='Техническая поддержка: '
-                        email='aleksey.khaydukov@sibir.rt.ru'
-                        href='mailto:aleksey.khaydukov@sibir.rt.ru'
+                        email='andrey.lisichenko@rt.ru'
+                        href='mailto:andrey.lisichenko@rt.ru'
                     />
                 </div>
             </div>

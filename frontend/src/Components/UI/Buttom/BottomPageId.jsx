@@ -7,10 +7,8 @@ const FooterContainer = ({ url }) => {
 
     return(
         <div className="bottom_container">
-            <button
-                className="message_button"
-                onClick={() => nav({url})}
-            >
+            <button className="message_button"
+                    onClick={() => nav({url})}>
                 Назад
             </button>
         </div>

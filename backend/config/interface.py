@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class AbstractRepository(ABC):
+    """ Main interface """
     @abstractmethod
     async def add_one():
         raise NotImplementedError

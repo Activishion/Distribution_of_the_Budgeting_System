@@ -4,10 +4,8 @@ import {Link} from 'react-router-dom'
 
 const HeaderLink = ({ to, text }) => {
     return(
-        <Link
-            to={to}
-            className="nav__link first"
-        >
+        <Link to={to}
+              className="nav__link first">
             {text}
         </Link>
     )

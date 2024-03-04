@@ -1,6 +1,6 @@
 from abc import  abstractmethod, ABC
 
-from sqlalchemy import text
+from sqlalchemy import text #Eliminates injections, required
 
 from config.logging import error_log
 from config.repository import SQLAlchemyRepository
@@ -12,6 +12,9 @@ class MessageRepository(SQLAlchemyRepository, ABC):
 
 
 class AbstractReportRepository(SQLAlchemyRepository, ABC):
+    """ 
+    Repository interface for reports.
+    """
     @abstractmethod
     async def add_one_user_through_procedures():
         raise NotImplementedError
@@ -50,9 +53,9 @@ class ReportingRepository(AbstractReportRepository):
             :param email: email of the subscriber
             :param report_id: report to which subscription is made
         """
-        stmt = (
+        stmt = (text(
             f"call bi.np_add_new_user_web({email}::varchar, {report_id}::varchar, ''::varchar, 0::int2)"
-        )
+        ))
         try:
             result = await self.session.execute(stmt)
             return result.scalar_one()
@@ -66,9 +69,9 @@ class ReportingRepository(AbstractReportRepository):
             :param email: email of the subscriber
             :param report_id: report to which subscription is made
         """
-        stmt = (
+        stmt = (text(
             f"call bi.np_delete_new_user_web({email}::varchar, {report_id}::varchar, ''::varchar, 0::int2)"
-        )
+        ))
         try:
             result = await self.session.execute(stmt)
             return result.scalar_one()
@@ -81,9 +84,9 @@ class ReportingRepository(AbstractReportRepository):
             Remove a user's news subscription.
             :param email: email of the subscriber
         """
-        stmt = (
+        stmt = (text(
             f"call huml.delete_user({email}, 'Портал', 'Удален по собственному желанию', true, ''::varchar, 0::int2)"
-        )
+        ))
         try:
             result = await self.session.execute(stmt)
             return result.scalar_one()
@@ -97,9 +100,9 @@ class ReportingRepository(AbstractReportRepository):
             :param email: email of the subscriber
             :param user_name: name of the subscriber
         """
-        stmt = (
+        stmt = (text(
             f"call huml.add_user({email}, {user_name}, true, ''::varchar, 0::int2)"
-        )
+        ))
         try:
             result = await self.session.execute(stmt)
             return result.scalar_one()

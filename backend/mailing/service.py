@@ -1,5 +1,8 @@
 import random
 
+from fastapi import HTTPException
+
+from config.logging import error_log
 from config.utils import InterfaseContextManager
 from .schemas import (CreateSubscriptionNewReport, CreateSubscriptionOnMessages,
                       ReadReports30Day)
@@ -7,11 +10,13 @@ from .schemas import (CreateSubscriptionNewReport, CreateSubscriptionOnMessages,
 
 class MessageService:
     async def get_all_messages(self, cmd: InterfaseContextManager):
-        async with cmd:
+        async with cmd: # pattern unit of work
             response_alchemy = await cmd.message.find_all()
 
+            # The data after alchemy has its own format and must be converted 
+            # into Python format either manually or using the method modal_validate from pydantic
             response_list: list = []
-            for response in response_alchemy:
+            for response in response_alchemy: 
                 dict = {
                     'id': str(response.id),
                     'send_date': str(response.send_date),
@@ -25,18 +30,21 @@ class MessageService:
                 response_list.append(dict)
 
             if len(response_list) == 0:
-                return None
+                error_log.error('Error loading messages.')
+                raise HTTPException(status_code=404, detail='Error loading messages.')
             return response_list
 
     async def get_message_by_id(self, id: str, cmd: InterfaseContextManager):
         if len(id) < 32 or len(id) > 36: 
-            return None
+            error_log.error('Error format uuid.')
+            raise HTTPException(status_code=400, detail='Error format uuid.')
 
         async with cmd:
             response_alchemy = await cmd.message.find_one_by_id(id)
 
             if response_alchemy is None:
-                return None
+                error_log.error('Error loading data.')
+                raise HTTPException(status_code=500, detail='Error loading data.')
 
             return {
                 'id': str(response_alchemy.id),
@@ -55,9 +63,9 @@ class MessageService:
         cmd: InterfaseContextManager
     ):
         async with cmd:
-            report_dict_on_news = report_on_new.model_dump()
+            report_dict_on_news = report_on_new.model_dump() # serialization in python
 
-            if report_dict_on_news['subscription'] == 'Подписаться':
+            if report_dict_on_news.get('subscription') == 'Подписаться':
                 news_subscription = await cmd.report.return_add_state_through_procedures(
                     report_dict_on_news['email'],
                     report_dict_on_news['author']
@@ -68,7 +76,7 @@ class MessageService:
 
                 await cmd.commit()
                 return news_subscription
-            elif report_dict_on_news['subscription'] == 'Отписаться':
+            elif report_dict_on_news.get('subscription') == 'Отписаться':
                 unsubscribe_from_news = await cmd.report.return_delete_state_through_procedures(
                     report_dict_on_news['email']
                 )
@@ -92,7 +100,7 @@ class ReportService:
 
             report_id = await cmd.report.get_report_by_report_name(subscription_dict['report'])
 
-            if subscription_dict['subscription'] == 'Подписаться':
+            if subscription_dict.get('subscription') == 'Подписаться':
                 response_add = await cmd.report.add_one_user_through_procedures(subscription_dict['email'], report_id)
 
                 if response_add is None:
@@ -101,7 +109,7 @@ class ReportService:
 
                 await cmd.commit()
                 return response_add
-            elif subscription_dict['subscription'] == 'Отписаться':
+            elif subscription_dict.get('subscription') == 'Отписаться':
                 response_delete = await cmd.report.delete_user_through_procedures(subscription_dict['email'], report_id)
 
                 if response_delete is None:
@@ -117,12 +125,14 @@ class ReportService:
             user_verification = await cmd.report.check_user(email_body['email'])
             
             if user_verification is None:
-                return None
+                error_log.error('User not found.')
+                raise HTTPException(status_code=404, detail='User not found.')
 
             response = await cmd.report.check_subscription(user_verification.email)
 
             if response.email is None:
-                return None
+                error_log.error('User not subscription.')
+                raise HTTPException(status_code=404, detail='User not subscription.')
 
             if response.moderator_acc == True and response.date_deleted is None:
                 return True
@@ -133,7 +143,8 @@ class ReportService:
             report = await cmd.report.find_one_by_email(email)
 
             if report is None:
-                return None
+                error_log.error('Report not found.')
+                raise HTTPException(status_code=404, detail='Report not found.')
             
             return {
                 'email': report.email,
@@ -156,8 +167,10 @@ class ReportService:
             response_alchemy = await cmd.report.subscription_in_30_days()
 
             if response_alchemy is None:
-                return None
+                error_log.error('Reports not found.')
+                raise HTTPException(status_code=404, detail='Reports not found.')
 
+            # transformation of data to output format
             response_list: list = []
             response_keys: tuple = ('date_x', 'date', 'op', 'email', 'user_name', 'state')
             for response in response_alchemy:
@@ -166,14 +179,15 @@ class ReportService:
                 response_dict["id"] = random.randint(1, 1000000000000)
                 response_list.append(response_dict)
             
-            return [ReadReports30Day.model_validate(response).dict() for response in response_list]
+            return [ReadReports30Day.model_validate(response).dict() for response in response_list] # serialization from python
         
     async def get_list_reports_for_subscription(self, cmd: InterfaseContextManager):
         async with cmd:
             response_alchemy = await cmd.report.get_list_reports()
 
             if response_alchemy is None:
-                return None
+                error_log.error('Reports for subscription not found.')
+                raise HTTPException(status_code=404, detail='Reports for subscription not found.')
             
             return list(response_alchemy.values())
         

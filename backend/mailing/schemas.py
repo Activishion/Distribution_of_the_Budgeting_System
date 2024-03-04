@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class Base(BaseModel):
-    model_config = ConfigDict(from_attributes = True)
+    model_config = ConfigDict(from_attributes = True) # Indicated if the system has access to the database.
 
 
 class CreateSubscriptionOnMessages(Base):   

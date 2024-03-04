@@ -31,6 +31,9 @@ class InterfaseContextManager:
 
 
 class ContextManager:
+    """
+    Custom context manager for overriding transaction behavior in queries.
+    """
     def __init__(self):
         self.session_factory = async_session_maker
 

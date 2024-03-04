@@ -14,11 +14,10 @@ router = APIRouter()
 @router.get('/test', tags=['Test'])
 async def check_connection(request: Request):
     try:
-        response = request.client.host
         static_log.info('Check connection by url /test')
         return {
             'status': status.HTTP_200_OK,
-            'message': f"Your ip-addreas: {response}"
+            'message': f"Your ip-addreas: {request.client.host}"
         }
     except:
         error_log.error('Error request /test')
@@ -26,7 +25,8 @@ async def check_connection(request: Request):
     
 
 @router.post('/check_subscription', response_model=bool, tags=['Report'])
-async def check_subscription_user(email: CheckSubscription, cmd: ContextManagerDepends, request: Request):
+async def check_subscription_user(email: CheckSubscription,
+                                  cmd: ContextManagerDepends, request: Request):
     check = await ReportService().check_subscription(email, cmd)
 
     if check is None:

@@ -5,6 +5,10 @@ from config.interface import AbstractRepository
 
 
 class SQLAlchemyRepository(AbstractRepository):
+    """
+    Implementing an interface using sqlalchemy.
+    If necessary, change the orm or pure sql.
+    """
     model = None
 
     def __init__(self, session: AsyncSession):

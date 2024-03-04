@@ -6,7 +6,7 @@ import PaginationService from '../UI/Pagination/Pages'
 
 
 const Journal = () => {
-    const nav = useNavigate()
+    const nav = useNavigate() // for join with page id
 
     const [journal, setJournal] = useState([])
     const [totalPages, setTotalPages] = useState(0)

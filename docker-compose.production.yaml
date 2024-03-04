@@ -1,0 +1,35 @@
+version: '3'
+
+volumes:
+  static_volume:
+  media:
+
+services:
+  backend:
+    container_name: backend
+    image: #imageName
+    env_file: .env
+    network_mode: "host"
+    restart: always
+    volumes:
+      - static_volume:/backend_static
+      - media:/app/media
+
+  frontend:
+    container_name: frontend
+    image: #imageName
+    command: cp -r /app/build/. /frontend_static/
+    network_mode: "host"
+    volumes:
+      - static_volume:/frontend_static
+
+  nginx:
+    container_name: nginx
+    image: #imageName
+    env_file: .env
+    volumes:
+      - static_volume:/staticfiles/
+      - media:/media
+    restart: always
+    network_mode: "host"
+  

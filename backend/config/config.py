@@ -1,6 +1,6 @@
 from starlette.config import Config
 
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncEngine
 from sqlalchemy.orm import DeclarativeBase
 
 
@@ -44,10 +44,12 @@ class Settings:
 
 settings = Settings()
 
-
-engine = create_async_engine(settings.database_url_postgresql)
+# asynchronous session engine
+engine: AsyncEngine = create_async_engine(settings.database_url_postgresql)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
+
 async def get_async_session():
+    """ Session factory """
     async with async_session_maker() as session:
         yield session

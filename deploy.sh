@@ -19,6 +19,3 @@ docker rmi $(docker images -a -q)
 
 docker volume ls
 docker volume prune
-
-
-host.docker.internal
